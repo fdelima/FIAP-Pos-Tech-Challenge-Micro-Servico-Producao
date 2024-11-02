@@ -2,9 +2,8 @@ name: Docker Image api CI
 
 on:
   push:
-    branches: [ "develop" ]
-  pull_request:
     branches: [ "main" ]
+    # branches: [ "main", "develop" ]
 
 jobs:
 
@@ -84,6 +83,6 @@ jobs:
       with:
         context: ./
         file: ./Src/Api/Dockerfile
-        tags: ${{ secrets.DOCKER_USERNAME }}/fiap-pos-techchallenge-gurpo-71-api:fase3az
+        tags: ${{ secrets.DOCKER_USERNAME }}/fiap-pos-tech-challenge-micro-servico-producao-gurpo-71-api:fase4az
         push: true
 
