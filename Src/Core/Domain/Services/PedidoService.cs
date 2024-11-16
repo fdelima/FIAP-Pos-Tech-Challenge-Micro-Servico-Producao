@@ -3,6 +3,7 @@ using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
 using FluentValidation;
+using System.Linq.Expressions;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
 {
@@ -28,6 +29,51 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         }
 
         /// <summary>
+        /// Regras base para inserção.
+        /// </summary>
+        /// <param name="entity">Entidade</param>
+        /// <param name="ValidatorResult">Validações já realizadas a serem adicionadas ao contexto</param>
+        public override async Task<ModelResult> InsertAsync(Pedido entity, string[]? businessRules = null)
+        {
+
+            if (!entity.Status.Equals(enmPedidoStatus.RECEBIDO.ToString())
+                || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
+            {
+                List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
+                temp.Add($"Permitido somente pedido com status 'RECEBIDO' e status do pagamento 'APROVADO'. " +
+                    $"Pedido: {entity.IdPedido} status:{entity.Status} status pagamento: {entity.StatusPagamento}");
+                businessRules = temp.ToArray();
+            }
+
+            ModelResult ValidatorResult = await ValidateAsync(entity);
+
+            Expression<Func<IDomainEntity, bool>> duplicatedExpression = entity.InsertDuplicatedRule();
+
+            if (ValidatorResult.IsValid)
+            {
+                if (duplicatedExpression != null)
+                {
+                    bool duplicado = await _gateway.Any(duplicatedExpression);
+
+                    if (duplicado)
+                        ValidatorResult.Add(ModelResultFactory.DuplicatedResult<Pedido>());
+                }
+
+                if (businessRules != null)
+                    ValidatorResult.AddError(businessRules);
+
+                if (!ValidatorResult.IsValid)
+                    return ValidatorResult;
+
+                await _gateway.InsertAsync(entity);
+                await _gateway.CommitAsync();
+                return ModelResultFactory.InsertSucessResult<Pedido>(entity);
+            }
+
+            return ValidatorResult;
+        }
+
+        /// <summary>
         /// Regra para colocar o pedido em preparação.
         /// </summary>
         /// <param name="id">id do pedido</param>
@@ -35,7 +81,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         {
             ModelResult ValidatorResult = new ModelResult();
 
-            var entity = await _gateway.FindByIdAsync(id);
+            Pedido? entity = await _gateway.FindByIdAsync(id);
 
             if (entity == null)
                 ValidatorResult = ModelResultFactory.NotFoundResult<Pedido>();
@@ -48,7 +94,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
 
             entity.Status = enmPedidoStatus.EM_PREPARACAO.ToString();
 
-            var transacao = _gateway.BeginTransaction();
+            Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transacao = _gateway.BeginTransaction();
             _notificacaoGateway.UseTransaction(transacao);
 
             await _gateway.UpdateAsync(entity);
@@ -77,7 +123,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         {
             ModelResult ValidatorResult = new ModelResult();
 
-            var entity = await _gateway.FindByIdAsync(id);
+            Pedido? entity = await _gateway.FindByIdAsync(id);
 
             if (entity == null)
                 ValidatorResult = ModelResultFactory.NotFoundResult<Pedido>();
@@ -90,7 +136,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
 
             entity.Status = enmPedidoStatus.PRONTO.ToString();
 
-            var transacao = _gateway.BeginTransaction();
+            Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transacao = _gateway.BeginTransaction();
             _notificacaoGateway.UseTransaction(transacao);
 
             await _gateway.UpdateAsync(entity);
@@ -119,7 +165,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         {
             ModelResult ValidatorResult = new ModelResult();
 
-            var entity = await _gateway.FindByIdAsync(id);
+            Pedido? entity = await _gateway.FindByIdAsync(id);
 
             if (entity == null)
                 ValidatorResult = ModelResultFactory.NotFoundResult<Pedido>();

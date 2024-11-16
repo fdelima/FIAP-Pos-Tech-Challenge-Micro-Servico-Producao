@@ -1,22 +1,11 @@
-﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.Controllers;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Handlers;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Validator;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
-using FluentValidation;
-using MediatR;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Microsoft.Extensions.Configuration;
 using NSubstitute;
-using NSubstitute.Extensions;
 using System.Linq.Expressions;
 using TestProject.MockData;
 
@@ -45,20 +34,20 @@ namespace TestProject.UnitTest.Aplication
         public async Task InserirComDadosValidos(Guid idDispositivo)
         {
             ///Arrange
-            var pedido = new Pedido
+            Pedido pedido = new Pedido
             {
                 IdDispositivo = idDispositivo
             };
 
-            var command = new PedidoPostCommand(pedido);
+            PedidoPostCommand command = new PedidoPostCommand(pedido);
 
             //Mockando retorno do serviço de domínio.
             _service.InsertAsync(pedido)
                 .Returns(Task.FromResult(ModelResultFactory.SucessResult(pedido)));
 
             //Act
-            var handler = new PedidoPostHandler(_service);
-            var result = await handler.Handle(command, CancellationToken.None);
+            PedidoPostHandler handler = new PedidoPostHandler(_service);
+            ModelResult result = await handler.Handle(command, CancellationToken.None);
 
             //Assert
             Assert.True(result.IsValid);
@@ -72,20 +61,20 @@ namespace TestProject.UnitTest.Aplication
         public async Task InserirComDadosInvalidos(Guid idDispositivo)
         {
             ///Arrange
-            var pedido = new Pedido
+            Pedido pedido = new Pedido
             {
                 IdDispositivo = idDispositivo
             };
 
-            var command = new PedidoPostCommand(pedido);
+            PedidoPostCommand command = new PedidoPostCommand(pedido);
 
             //Mockando retorno do serviço de domínio.
             _service.InsertAsync(pedido)
                 .Returns(Task.FromResult(ModelResultFactory.NotFoundResult<Pedido>()));
 
             //Act
-            var handler = new PedidoPostHandler(_service);
-            var result = await handler.Handle(command, CancellationToken.None);
+            PedidoPostHandler handler = new PedidoPostHandler(_service);
+            ModelResult result = await handler.Handle(command, CancellationToken.None);
 
             //Assert
             Assert.False(result.IsValid);
@@ -100,21 +89,21 @@ namespace TestProject.UnitTest.Aplication
         public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
-            var pedido = new Pedido
+            Pedido pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo
             };
 
-            var command = new PedidoPutCommand(idPedido, pedido);
+            PedidoPutCommand command = new PedidoPutCommand(idPedido, pedido);
 
             //Mockando retorno do serviço de domínio.
             _service.UpdateAsync(pedido)
                 .Returns(Task.FromResult(ModelResultFactory.SucessResult()));
 
             //Act
-            var handler = new PedidoPutHandler(_service);
-            var result = await handler.Handle(command, CancellationToken.None);
+            PedidoPutHandler handler = new PedidoPutHandler(_service);
+            ModelResult result = await handler.Handle(command, CancellationToken.None);
 
             //Assert
             Assert.True(result.IsValid);
@@ -128,21 +117,21 @@ namespace TestProject.UnitTest.Aplication
         public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
-            var pedido = new Pedido
+            Pedido pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo
             };
 
-            var command = new PedidoPutCommand(idPedido, pedido);
+            PedidoPutCommand command = new PedidoPutCommand(idPedido, pedido);
 
             //Mockando retorno do serviço de domínio.
             _service.UpdateAsync(pedido)
                 .Returns(Task.FromResult(ModelResultFactory.NotFoundResult<Pedido>()));
 
             //Act
-            var handler = new PedidoPutHandler(_service);
-            var result = await handler.Handle(command, CancellationToken.None);
+            PedidoPutHandler handler = new PedidoPutHandler(_service);
+            ModelResult result = await handler.Handle(command, CancellationToken.None);
 
             //Assert
             Assert.False(result.IsValid);
@@ -156,15 +145,15 @@ namespace TestProject.UnitTest.Aplication
         public async Task DeletarPedido(Guid idPedido)
         {
             ///Arrange
-            var command = new PedidoDeleteCommand(idPedido);
+            PedidoDeleteCommand command = new PedidoDeleteCommand(idPedido);
 
             //Mockando retorno do serviço de domínio.
             _service.DeleteAsync(idPedido)
                 .Returns(Task.FromResult(ModelResultFactory.SucessResult()));
 
             //Act
-            var handler = new PedidoDeleteHandler(_service);
-            var result = await handler.Handle(command, CancellationToken.None);
+            PedidoDeleteHandler handler = new PedidoDeleteHandler(_service);
+            ModelResult result = await handler.Handle(command, CancellationToken.None);
 
             //Assert
             Assert.True(result.IsValid);
@@ -178,21 +167,21 @@ namespace TestProject.UnitTest.Aplication
         public async Task ConsultarPedidoPorId(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
-            var pedido = new Pedido
+            Pedido pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo
             };
 
-            var command = new PedidoFindByIdCommand(idPedido);
+            PedidoFindByIdCommand command = new PedidoFindByIdCommand(idPedido);
 
             //Mockando retorno do serviço de domínio.
             _service.FindByIdAsync(idPedido)
                 .Returns(Task.FromResult(ModelResultFactory.SucessResult(pedido)));
 
             //Act
-            var handler = new PedidoFindByIdHandler(_service);
-            var result = await handler.Handle(command, CancellationToken.None);
+            PedidoFindByIdHandler handler = new PedidoFindByIdHandler(_service);
+            ModelResult result = await handler.Handle(command, CancellationToken.None);
 
             //Assert
             Assert.True(result.IsValid);
@@ -206,8 +195,8 @@ namespace TestProject.UnitTest.Aplication
         public async Task ConsultarPedidoComCondicao(IPagingQueryParam filter, Expression<Func<Pedido, object>> sortProp, IEnumerable<Pedido> pedidos)
         {
             ///Arrange
-            var param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
-            var command = new PedidoGetItemsCommand(filter, param.ConsultRule(), sortProp);
+            PagingQueryParam<Pedido> param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
+            PedidoGetItemsCommand command = new PedidoGetItemsCommand(filter, param.ConsultRule(), sortProp);
 
             //Mockando retorno do serviço de domínio.
             _service.GetItemsAsync(Arg.Any<PagingQueryParam<Pedido>>(),
@@ -216,8 +205,8 @@ namespace TestProject.UnitTest.Aplication
                 .Returns(new ValueTask<PagingQueryResult<Pedido>>(new PagingQueryResult<Pedido>(new List<Pedido>(pedidos))));
 
             //Act
-            var handler = new PedidoGetItemsHandler(_service);
-            var result = await handler.Handle(command, CancellationToken.None);
+            PedidoGetItemsHandler handler = new PedidoGetItemsHandler(_service);
+            PagingQueryResult<Pedido> result = await handler.Handle(command, CancellationToken.None);
 
             //Assert
             Assert.True(result.Content.Any());
@@ -232,15 +221,15 @@ namespace TestProject.UnitTest.Aplication
         public async Task ConsultarPedidoSemCondicao(IPagingQueryParam filter, Expression<Func<Pedido, object>> sortProp, IEnumerable<Pedido> pedidos)
         {
             ///Arrange
-            var command = new PedidoGetItemsCommand(filter, sortProp);
+            PedidoGetItemsCommand command = new PedidoGetItemsCommand(filter, sortProp);
 
             //Mockando retorno do serviço de domínio.
             _service.GetItemsAsync(filter, sortProp)
                 .Returns(new ValueTask<PagingQueryResult<Pedido>>(new PagingQueryResult<Pedido>(new List<Pedido>(pedidos))));
 
             //Act
-            var handler = new PedidoGetItemsHandler(_service);
-            var result = await handler.Handle(command, CancellationToken.None);
+            PedidoGetItemsHandler handler = new PedidoGetItemsHandler(_service);
+            PagingQueryResult<Pedido> result = await handler.Handle(command, CancellationToken.None);
 
             //Assert
             Assert.True(result.Content.Any());

@@ -16,5 +16,5 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Validator
         {
             RuleFor(c => c.IdDispositivo).NotEmpty().WithMessage(ValidationMessages.RequiredField);
         }
-    }    
+    }
 }

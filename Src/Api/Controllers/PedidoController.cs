@@ -1,4 +1,5 @@
-﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -20,6 +21,21 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Api.Controllers
         public PedidoController(IPedidoController controller)
         {
             _controller = controller;
+        }
+
+        /// <summary>
+        /// Inseri o Pedido recebido.
+        /// </summary>
+        /// <param name="model">Objeto contendo as informações para inclusão.</param>
+        /// <returns>Retorna o result do Pedido cadastrado.</returns>
+        /// <response code="200">Pedido inserida com sucesso.</response>
+        /// <response code="400">Erros de validação dos parâmetros para inserção do Pedido.</response>
+        [HttpPost("InserirRecebido")]
+        [ProducesResponseType(typeof(ModelResult), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Post(Pedido model)
+        {
+            return ExecuteCommand(await _controller.PostAsync(model));
         }
 
         /// <summary>

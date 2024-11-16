@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.IoC;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra.IoC;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.IoC;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.IoC
 {

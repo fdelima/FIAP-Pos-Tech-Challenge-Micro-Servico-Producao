@@ -17,7 +17,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.IoC
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
-            
+
             //Notificacao
             services.AddScoped<IRequestHandler<NotificacaoPostCommand, ModelResult>, NotificacaoPostHandler>();
             services.AddScoped<IRequestHandler<NotificacaoPutCommand, ModelResult>, NotificacaoPutHandler>();
