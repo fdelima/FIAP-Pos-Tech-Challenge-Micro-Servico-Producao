@@ -7,10 +7,13 @@ using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.IoC
 {
+    [ExcludeFromCodeCoverage(Justification = "Arquivo de configuração")]
+
     internal static class CommandsRegistry
     {
         public static void RegisterCommands(this IServiceCollection services)

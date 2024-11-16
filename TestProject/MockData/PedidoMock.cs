@@ -19,7 +19,8 @@ namespace TestProject.MockData
             for (int index = 1; index <= quantidade; index++)
                 yield return new object[]
                 {
-                    Guid.NewGuid()
+                    Guid.NewGuid(),                    
+                    enmPedidoStatusPagamento.APROVADO
                 };
         }
 
@@ -38,7 +39,7 @@ namespace TestProject.MockData
         /// <summary>
         /// Mock de dados válidos
         /// </summary>
-        public static IEnumerable<object[]> ObterDadosConsultaValidos(int quantidade)
+        public static IEnumerable<object[]> ObterDadosConsulta(int quantidade)
         {
             List<Pedido> pedidos = new List<Pedido>();
             for (int index = 1; index <= quantidade; index++)
@@ -46,7 +47,7 @@ namespace TestProject.MockData
                 {
                     IdPedido = Guid.NewGuid(),
                     IdDispositivo = Guid.NewGuid(),
-                    Status = ((enmPedidoStatus)new Random().Next(1, 2)).ToString()
+                    Status = ((enmPedidoStatus)new Random().Next(0, 3)).ToString()
                 });
 
             for (int index = 1; index <= quantidade; index++)
@@ -60,39 +61,6 @@ namespace TestProject.MockData
                 };
             }
 
-        }
-
-        /// <summary>
-        /// Mock de dados inválidos
-        /// </summary>
-        public static IEnumerable<object[]> ObterDadosConsultaInValidos(int quantidade)
-        {
-            List<Pedido> pedidos = new List<Pedido>();
-            for (int index = 1; index <= quantidade; index++)
-                pedidos.Add(new Pedido
-                {
-                    IdPedido = Guid.NewGuid(),
-                    IdDispositivo = Guid.NewGuid(),
-                    Status = ((enmPedidoStatus)new Random().Next(1, 2)).ToString()
-                });
-
-            pedidos.Add(
-                new Pedido
-                {
-                    IdPedido = Guid.NewGuid(),
-                    Status = enmPedidoStatus.FINALIZADO.ToString()
-                });
-
-            for (int index = 1; index <= quantidade; index++)
-            {
-                PagingQueryParam<Pedido> param = new PagingQueryParam<Pedido>() { CurrentPage = index, Take = 10 };
-                yield return new object[]
-                {
-                    param,
-                    param.SortProp(),
-                    pedidos
-                };
-            }
         }
 
         public static IEnumerable<object[]> ObterDadosConsultaPorIdValidos(int quantidade)

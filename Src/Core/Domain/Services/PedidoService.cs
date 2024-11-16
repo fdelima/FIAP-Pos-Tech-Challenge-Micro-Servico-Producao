@@ -45,32 +45,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
                 businessRules = temp.ToArray();
             }
 
-            ModelResult ValidatorResult = await ValidateAsync(entity);
-
-            Expression<Func<IDomainEntity, bool>> duplicatedExpression = entity.InsertDuplicatedRule();
-
-            if (ValidatorResult.IsValid)
-            {
-                if (duplicatedExpression != null)
-                {
-                    bool duplicado = await _gateway.Any(duplicatedExpression);
-
-                    if (duplicado)
-                        ValidatorResult.Add(ModelResultFactory.DuplicatedResult<Pedido>());
-                }
-
-                if (businessRules != null)
-                    ValidatorResult.AddError(businessRules);
-
-                if (!ValidatorResult.IsValid)
-                    return ValidatorResult;
-
-                await _gateway.InsertAsync(entity);
-                await _gateway.CommitAsync();
-                return ModelResultFactory.InsertSucessResult<Pedido>(entity);
-            }
-
-            return ValidatorResult;
+            return await base.InsertAsync(entity, businessRules);
         }
 
         /// <summary>
@@ -85,6 +60,15 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
 
             if (entity == null)
                 ValidatorResult = ModelResultFactory.NotFoundResult<Pedido>();
+
+            if (!entity.Status.Equals(enmPedidoStatus.RECEBIDO.ToString())
+                || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
+            {
+                List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
+                temp.Add($"Permitido somente pedido com status 'RECEBIDO' e status do pagamento 'APROVADO'. " +
+                    $"Pedido: {entity.IdPedido} status:{entity.Status} status pagamento: {entity.StatusPagamento}");
+                businessRules = temp.ToArray();
+            }
 
             if (businessRules != null)
                 ValidatorResult.AddError(businessRules);
@@ -128,6 +112,15 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
             if (entity == null)
                 ValidatorResult = ModelResultFactory.NotFoundResult<Pedido>();
 
+            if (!entity.Status.Equals(enmPedidoStatus.EM_PREPARACAO.ToString())
+                || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
+            {
+                List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
+                temp.Add($"Permitido somente pedido com status 'EM_PREPARACAO' e status do pagamento 'APROVADO'. " +
+                    $"Pedido: {entity.IdPedido} status:{entity.Status} status pagamento: {entity.StatusPagamento}");
+                businessRules = temp.ToArray();
+            }
+
             if (businessRules != null)
                 ValidatorResult.AddError(businessRules);
 
@@ -169,6 +162,15 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
 
             if (entity == null)
                 ValidatorResult = ModelResultFactory.NotFoundResult<Pedido>();
+
+            if (!entity.Status.Equals(enmPedidoStatus.PRONTO.ToString())
+                || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
+            {
+                List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
+                temp.Add($"Permitido somente pedido com status 'PRONTO' e status do pagamento 'APROVADO'. " +
+                    $"Pedido: {entity.IdPedido} status:{entity.Status} status pagamento: {entity.StatusPagamento}");
+                businessRules = temp.ToArray();
+            }
 
             if (businessRules != null)
                 ValidatorResult.AddError(businessRules);

@@ -5,6 +5,7 @@ using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
 using NSubstitute;
 using System.Linq.Expressions;
 using TestProject.MockData;
@@ -31,12 +32,13 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 3)]
-        public async Task InserirComDadosValidos(Guid idDispositivo)
+        public async Task InserirComDadosValidos(Guid idDispositivo, enmPedidoStatusPagamento statusPagamento)
         {
             ///Arrange
             Pedido pedido = new Pedido
             {
-                IdDispositivo = idDispositivo
+                IdDispositivo = idDispositivo,
+                StatusPagamento = statusPagamento.ToString()
             };
 
             PedidoPostCommand command = new PedidoPostCommand(pedido);
@@ -86,13 +88,14 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo)
+        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, enmPedidoStatusPagamento statusPagamento)
         {
             ///Arrange
             Pedido pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo
+                IdDispositivo = idDispositivo,
+                StatusPagamento = statusPagamento.ToString()
             };
 
             PedidoPutCommand command = new PedidoPutCommand(idPedido, pedido);
@@ -164,13 +167,14 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task ConsultarPedidoPorId(Guid idPedido, Guid idDispositivo)
+        public async Task ConsultarPedidoPorId(Guid idPedido, Guid idDispositivo, enmPedidoStatusPagamento statusPagamento)
         {
             ///Arrange
             Pedido pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo
+                IdDispositivo = idDispositivo,
+                StatusPagamento = statusPagamento.ToString()
             };
 
             PedidoFindByIdCommand command = new PedidoFindByIdCommand(idPedido);
@@ -257,10 +261,7 @@ namespace TestProject.UnitTest.Aplication
                         return PedidoMock.ObterDadosInvalidos(quantidade)
                             .Select(i => new object[] { Guid.NewGuid() }.Concat(i).ToArray());
                 case enmTipo.Consulta:
-                    if (dadosValidos)
-                        return PedidoMock.ObterDadosConsultaValidos(quantidade);
-                    else
-                        return PedidoMock.ObterDadosConsultaInValidos(quantidade);
+                        return PedidoMock.ObterDadosConsulta(quantidade);
                 case enmTipo.ConsultaPorId:
                     if (dadosValidos)
                         return PedidoMock.ObterDadosConsultaPorIdValidos(quantidade);

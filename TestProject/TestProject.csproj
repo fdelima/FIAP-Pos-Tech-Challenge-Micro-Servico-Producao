@@ -10,11 +10,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="MockData\AcaoConsultaMock.cs" />
-	  <Compile Remove="MockData\PedidoConsultaMock.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="coverlet.collector" Version="6.0.2">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -36,10 +31,6 @@
 
 	<ItemGroup>
 		<Using Include="Xunit" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="ComponenteTest\" />
 	</ItemGroup>
 
 </Project>
