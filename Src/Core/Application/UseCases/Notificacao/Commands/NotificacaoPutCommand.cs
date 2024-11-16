@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Notificacao.Commands
 {
-    internal class NotificacaoPutCommand : IRequest<ModelResult>
+    public class NotificacaoPutCommand : IRequest<ModelResult>
     {
         public NotificacaoPutCommand(Guid id, Domain.Entities.Notificacao entity,
             string[]? businessRules = null)

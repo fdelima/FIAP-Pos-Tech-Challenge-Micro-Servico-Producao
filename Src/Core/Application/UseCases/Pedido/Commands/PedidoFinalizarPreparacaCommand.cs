@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands
 {
-    internal class PedidoFinalizarPreparacaCommand : IRequest<ModelResult>
+    public class PedidoFinalizarPreparacaCommand : IRequest<ModelResult>
     {
         public PedidoFinalizarPreparacaCommand(Guid id, string[]? businessRules = null)
         {

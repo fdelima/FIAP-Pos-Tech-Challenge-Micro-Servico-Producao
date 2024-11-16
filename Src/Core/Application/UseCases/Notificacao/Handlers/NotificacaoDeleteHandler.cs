@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Notificacao.Handlers
 {
-    internal class NotificacaoDeleteHandler : IRequestHandler<NotificacaoDeleteCommand, ModelResult>
+    public class NotificacaoDeleteHandler : IRequestHandler<NotificacaoDeleteCommand, ModelResult>
     {
         private readonly IService<Domain.Entities.Notificacao> _service;
 

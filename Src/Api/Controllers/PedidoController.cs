@@ -9,7 +9,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Api.Controllers
     /// <summary>
     /// Controller dos Pedidos cadastrados
     /// </summary>
-    [Route("api/[Controller]")]
+    [Route("api/producao/[Controller]")]
     public class PedidoController : ApiController
     {
         private readonly IPedidoController _controller;

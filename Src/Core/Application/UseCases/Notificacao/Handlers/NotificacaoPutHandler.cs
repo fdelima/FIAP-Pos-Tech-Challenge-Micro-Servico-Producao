@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Notificacao.Handlers
 {
-    internal class NotificacaoPutHandler : IRequestHandler<NotificacaoPutCommand, ModelResult>
+    public class NotificacaoPutHandler : IRequestHandler<NotificacaoPutCommand, ModelResult>
     {
         private readonly IService<Domain.Entities.Notificacao> _service;
 

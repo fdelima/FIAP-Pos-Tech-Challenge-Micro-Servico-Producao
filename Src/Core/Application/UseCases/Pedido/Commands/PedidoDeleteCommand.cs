@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands
 {
-    internal class PedidoDeleteCommand : IRequest<ModelResult>
+    public class PedidoDeleteCommand : IRequest<ModelResult>
     {
         public PedidoDeleteCommand(Guid id, string[]? businessRules = null)
         {

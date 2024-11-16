@@ -1,11 +1,11 @@
-﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Application.UseCases.Pedido.Commands;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Entities;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Extensions;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Interfaces;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Models;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Services;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Validator;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Validator;
 using FluentValidation;
 using NSubstitute;
 using System.Linq.Expressions;
@@ -37,13 +37,12 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 3)]
-        public async Task InserirComDadosValidos(Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task InserirComDadosValidos(Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
@@ -60,13 +59,12 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, false, 3)]
-        public async Task InserirComDadosInvalidos(Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task InserirComDadosInvalidos(Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
@@ -84,21 +82,20 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
             //Mockando retorno do metodo interno do UpdateAsync
-            _gatewayPedidoMock.FirstOrDefaultWithIncludeAsync(Arg.Any<Expression<Func<Pedido, ICollection<PedidoItem>>>>(), Arg.Any<Expression<Func<Pedido, bool>>>())
-                .Returns(new ValueTask<Pedido>(pedido));
+            //_gatewayPedidoMock.FirstOrDefaultWithIncludeAsync(Arg.Any<Expression<Func<Pedido, ICollection<PedidoItem>>>>(), Arg.Any<Expression<Func<Pedido, bool>>>())
+            //    .Returns(new ValueTask<Pedido>(pedido));
 
             //Mockando retorno do metodo interno do UpdateAsync
             _gatewayPedidoMock.UpdateAsync(Arg.Any<Pedido>())
@@ -116,21 +113,20 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, false, 3)]
-        public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
             
             //Mockando retorno do metodo interno do UpdateAsync
-            _gatewayPedidoMock.FirstOrDefaultWithIncludeAsync(Arg.Any<Expression<Func<Pedido, ICollection<PedidoItem>>>>(), Arg.Any<Expression<Func<Pedido, bool>>>())
-                .Returns(new ValueTask<Pedido>(pedido));
+            //_gatewayPedidoMock.FirstOrDefaultWithIncludeAsync(Arg.Any<Expression<Func<Pedido, ICollection<PedidoItem>>>>(), Arg.Any<Expression<Func<Pedido, bool>>>())
+            //    .Returns(new ValueTask<Pedido>(pedido));
 
             //Act
             var result = await domainService.UpdateAsync(pedido);
@@ -144,14 +140,13 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task DeletarPedido(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task DeletarPedido(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
@@ -175,20 +170,21 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task ConsultarPedidoPorIdComDadosValidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task ConsultarPedidoPorIdComDadosValidos(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
             //Mockando retorno do metodo interno do FindByIdAsync
-            _gatewayPedidoMock.FirstOrDefaultWithIncludeAsync(Arg.Any<Expression<Func<Pedido, ICollection<PedidoItem>>>>(), Arg.Any<Expression<Func<Pedido, bool>>>())
+            //_gatewayPedidoMock.FirstOrDefaultWithIncludeAsync(Arg.Any<Expression<Func<Pedido, ICollection<PedidoItem>>>>(), Arg.Any<Expression<Func<Pedido, bool>>>())
+            //    .Returns(new ValueTask<Pedido>(pedido));
+            _gatewayPedidoMock.FindByIdAsync(idPedido)
                 .Returns(new ValueTask<Pedido>(pedido));
 
             //Act
@@ -203,14 +199,13 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task ConsultarPedidoPorIdComDadosInvalidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task ConsultarPedidoPorIdComDadosInvalidos(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);

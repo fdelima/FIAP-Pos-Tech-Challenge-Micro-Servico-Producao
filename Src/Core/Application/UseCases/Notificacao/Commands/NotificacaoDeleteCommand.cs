@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Notificacao.Commands
 {
-    internal class NotificacaoDeleteCommand : IRequest<ModelResult>
+    public class NotificacaoDeleteCommand : IRequest<ModelResult>
     {
         public NotificacaoDeleteCommand(Guid id, string[]? businessRules = null)
         {

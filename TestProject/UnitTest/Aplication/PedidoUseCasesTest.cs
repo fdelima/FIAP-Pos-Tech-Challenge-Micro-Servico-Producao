@@ -1,16 +1,16 @@
-﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Application.Controllers;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Application.UseCases.Pedido.Commands;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Application.UseCases.Pedido.Handlers;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Entities;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Extensions;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Interfaces;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Models;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Validator;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.ValuesObject;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Interfaces;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Models;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.Controllers;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Handlers;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Validator;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
@@ -42,13 +42,12 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 3)]
-        public async Task InserirComDadosValidos(Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task InserirComDadosValidos(Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var command = new PedidoPostCommand(pedido);
@@ -70,13 +69,12 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, false, 3)]
-        public async Task InserirComDadosInvalidos(Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task InserirComDadosInvalidos(Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var command = new PedidoPostCommand(pedido);
@@ -99,14 +97,13 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var command = new PedidoPutCommand(idPedido, pedido);
@@ -128,14 +125,13 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, false, 3)]
-        public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var command = new PedidoPutCommand(idPedido, pedido);
@@ -179,14 +175,13 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task ConsultarPedidoPorId(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task ConsultarPedidoPorId(Guid idPedido, Guid idDispositivo)
         {
             ///Arrange
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdDispositivo = idDispositivo
             };
 
             var command = new PedidoFindByIdCommand(idPedido);

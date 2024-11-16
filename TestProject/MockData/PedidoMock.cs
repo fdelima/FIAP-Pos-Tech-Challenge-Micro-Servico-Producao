@@ -1,7 +1,7 @@
-﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Entities;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.Extensions;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Pedido.Domain.ValuesObject;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
 
 namespace TestProject.MockData
 {
@@ -19,14 +19,7 @@ namespace TestProject.MockData
             for (var index = 1; index <= quantidade; index++)
                 yield return new object[]
                 {
-                    Guid.NewGuid(),
-                    new PedidoItem[]
-                    {
-                        new PedidoItem {
-                            IdProduto =  Guid.NewGuid(),
-                            Quantidade = 1
-                        }
-                    }
+                    Guid.NewGuid()
                 };
         }
 
@@ -38,14 +31,7 @@ namespace TestProject.MockData
             for (var index = 1; index <= quantidade; index++)
                 yield return new object[]
                 {
-                    Guid.Empty,
-                    new PedidoItem[]
-                    {
-                        new PedidoItem {
-                            IdProduto =  Guid.NewGuid(),
-                            Quantidade = 0
-                        }
-                    }
+                    Guid.Empty
                 };
         }
 
@@ -60,14 +46,7 @@ namespace TestProject.MockData
                 {
                     IdPedido = Guid.NewGuid(),
                     IdDispositivo = Guid.NewGuid(),
-                    PedidoItems = new PedidoItem[]
-                    {
-                        new PedidoItem {
-                            IdProduto =  Guid.NewGuid(),
-                            Quantidade = 1
-                        }
-                    },
-                    Status = ((enmPedidoStatus)new Random().Next(0, 2)).ToString()
+                    Status = ((enmPedidoStatus)new Random().Next(1, 2)).ToString()
                 });
 
             for (var index = 1; index <= quantidade; index++)
@@ -94,27 +73,13 @@ namespace TestProject.MockData
                 {
                     IdPedido = Guid.NewGuid(),
                     IdDispositivo = Guid.NewGuid(),
-                    PedidoItems = new PedidoItem[]
-                    {
-                        new PedidoItem {
-                            IdProduto =  Guid.NewGuid(),
-                            Quantidade = 1
-                        }
-                    },
-                    Status = ((enmPedidoStatus)new Random().Next(0, 2)).ToString()
+                    Status = ((enmPedidoStatus)new Random().Next(1, 2)).ToString()
                 });
 
             pedidos.Add(
                 new Pedido
                 {
                     IdPedido = Guid.NewGuid(),
-                    PedidoItems = new PedidoItem[]
-                    {
-                        new PedidoItem {
-                            IdProduto =  Guid.NewGuid(),
-                            Quantidade = 1
-                        }
-                    },
                     Status = enmPedidoStatus.FINALIZADO.ToString()
                 });
 
