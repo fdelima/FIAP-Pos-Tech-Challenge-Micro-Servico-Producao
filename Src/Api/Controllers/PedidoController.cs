@@ -1,9 +1,9 @@
-﻿using FIAP.Pos.Tech.Challenge.Domain.Interfaces;
-using FIAP.Pos.Tech.Challenge.Domain.Models;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace FIAP.Pos.Tech.Challenge.Api.Controllers
+namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Api.Controllers
 {
     //TODO: Controller :: 1 - Duplicar esta controller de exemplo e trocar o nome da entidade.
     /// <summary>

@@ -1,9 +1,9 @@
-﻿using FIAP.Pos.Tech.Challenge.Domain.Entities;
-using FIAP.Pos.Tech.Challenge.Domain.Interfaces;
-using FIAP.Pos.Tech.Challenge.Domain.Models;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using FluentValidation;
 
-namespace FIAP.Pos.Tech.Challenge.Domain.Services
+namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
 {
     public class NotificacaoService : BaseService<Notificacao>
     {

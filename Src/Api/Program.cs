@@ -1,5 +1,5 @@
-using FIAP.Pos.Tech.Challenge.Api;
-using FIAP.Pos.Tech.Challenge.IoC;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Api;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.IoC;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

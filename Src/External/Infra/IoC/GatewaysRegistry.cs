@@ -1,8 +1,8 @@
-﻿using FIAP.Pos.Tech.Challenge.Domain.Interfaces;
-using FIAP.Pos.Tech.Challenge.Infra.Gateways;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra.Gateways;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FIAP.Pos.Tech.Challenge.Infra.IoC
+namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra.IoC
 {
     internal static class GatewaysRegistry
     {

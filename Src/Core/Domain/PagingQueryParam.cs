@@ -1,6 +1,6 @@
-﻿using FIAP.Pos.Tech.Challenge.Domain.Interfaces;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 
-namespace FIAP.Pos.Tech.Challenge.Domain
+namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain
 {
     /// <summary>
     /// Parametros de entrada para paginação do resultado da query

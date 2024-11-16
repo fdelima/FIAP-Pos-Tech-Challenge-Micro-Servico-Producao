@@ -1,13 +1,13 @@
-﻿using FIAP.Pos.Tech.Challenge.Application.UseCases.Pedido.Commands;
-using FIAP.Pos.Tech.Challenge.Domain;
-using FIAP.Pos.Tech.Challenge.Domain.Interfaces;
-using FIAP.Pos.Tech.Challenge.Domain.Models;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Linq.Expressions;
 
-namespace FIAP.Pos.Tech.Challenge.Application.Controllers
+namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.Controllers
 {
     /// <summary>
     /// Regras da aplicação referente ao pedido

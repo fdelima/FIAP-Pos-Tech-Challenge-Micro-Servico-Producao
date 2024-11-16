@@ -1,8 +1,8 @@
-﻿using FIAP.Pos.Tech.Challenge.Domain.Entities;
-using FIAP.Pos.Tech.Challenge.Infra.Mappings;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra.Mappings;
 using Microsoft.EntityFrameworkCore;
 
-namespace FIAP.Pos.Tech.Challenge.Infra
+namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra
 {
     public partial class Context : DbContext
     {

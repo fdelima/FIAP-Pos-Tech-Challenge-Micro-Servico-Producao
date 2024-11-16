@@ -1,7 +1,7 @@
-﻿using FIAP.Pos.Tech.Challenge.Domain.Interfaces;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FluentValidation.Results;
 
-namespace FIAP.Pos.Tech.Challenge.Domain.Models
+namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models
 {
     /// <summary>
     /// Result para os commands
