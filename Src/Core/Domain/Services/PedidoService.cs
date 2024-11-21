@@ -3,7 +3,6 @@ using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
 using FluentValidation;
-using System.Linq.Expressions;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
 {

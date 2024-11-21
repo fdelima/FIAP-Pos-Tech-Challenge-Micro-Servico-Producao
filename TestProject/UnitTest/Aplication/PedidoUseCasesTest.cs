@@ -261,7 +261,7 @@ namespace TestProject.UnitTest.Aplication
                         return PedidoMock.ObterDadosInvalidos(quantidade)
                             .Select(i => new object[] { Guid.NewGuid() }.Concat(i).ToArray());
                 case enmTipo.Consulta:
-                        return PedidoMock.ObterDadosConsulta(quantidade);
+                    return PedidoMock.ObterDadosConsulta(quantidade);
                 case enmTipo.ConsultaPorId:
                     if (dadosValidos)
                         return PedidoMock.ObterDadosConsultaPorIdValidos(quantidade);

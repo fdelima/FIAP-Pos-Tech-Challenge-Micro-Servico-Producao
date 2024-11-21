@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra.IoC
 {
-    [ExcludeFromCodeCoverage(Justification = "Arquivo de configuração")]   
+    [ExcludeFromCodeCoverage(Justification = "Arquivo de configuração")]
     internal static class DatabaseRegistry
     {
         public static void RegisterDatabase(this IServiceCollection services, IConfiguration configuration)

@@ -8,8 +8,8 @@
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/api-docs",
       "serviceActions": {
         "fiap.pos.tech.challenge.micro.servico.producao.api": "StartDebugging",
-        "mssqltools": "StartWithoutDebugging",
-        "sqlserver": "StartWithoutDebugging"
+        "mssqltools-producao": "StartWithoutDebugging",
+        "sqlserver-producao": "StartWithoutDebugging"
       }
     }
   }

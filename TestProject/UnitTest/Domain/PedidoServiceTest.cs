@@ -480,7 +480,7 @@ namespace TestProject.UnitTest.Domain
                         return PedidoMock.ObterDadosInvalidos(quantidade)
                             .Select(i => new object[] { Guid.NewGuid() }.Concat(i).ToArray());
                 case enmTipo.Consulta:
-                        return PedidoMock.ObterDadosConsulta(quantidade);
+                    return PedidoMock.ObterDadosConsulta(quantidade);
                 default:
                     return null;
             }

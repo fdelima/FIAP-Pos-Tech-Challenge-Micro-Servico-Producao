@@ -19,7 +19,7 @@ namespace TestProject.MockData
             for (int index = 1; index <= quantidade; index++)
                 yield return new object[]
                 {
-                    Guid.NewGuid(),                    
+                    Guid.NewGuid(),
                     enmPedidoStatusPagamento.APROVADO
                 };
         }
