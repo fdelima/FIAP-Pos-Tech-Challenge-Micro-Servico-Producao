@@ -41,18 +41,20 @@ namespace TestProject.MockData
         /// </summary>
         public static IEnumerable<object[]> ObterDadosConsulta(int quantidade)
         {
-            List<Pedido> pedidos = new List<Pedido>();
-            for (int index = 1; index <= quantidade; index++)
-                pedidos.Add(new Pedido
-                {
-                    IdPedido = Guid.NewGuid(),
-                    IdDispositivo = Guid.NewGuid(),
-                    Status = ((enmPedidoStatus)new Random().Next(0, 3)).ToString()
-                });
-
             for (int index = 1; index <= quantidade; index++)
             {
-                PagingQueryParam<Pedido> param = new PagingQueryParam<Pedido>() { CurrentPage = index, Take = 10 };
+                List<Pedido> pedidos = new List<Pedido>();
+                for (int index2 = 1; index <= quantidade; index++)
+                {
+                    pedidos.Add(new Pedido
+                    {
+                        IdPedido = Guid.NewGuid(),
+                        IdDispositivo = Guid.NewGuid(),
+                        Status = ((enmPedidoStatus)new Random().Next(0, 3)).ToString()
+                    });
+                }
+
+                PagingQueryParam<Pedido> param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
                 yield return new object[]
                 {
                     param,
