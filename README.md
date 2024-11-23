@@ -17,11 +17,11 @@ docker compose up
 ```
 # Navegação
 * Documentação 
-    * [https://localhost:8081/api-docs](https://localhost:8081/api-docs/index.html)
-    * [http://localhost:8080/api-docs](http://localhost:8080/api-docs/index.html) 
+    * [https://localhost:8085/api-docs](https://localhost:8085/api-docs/index.html)
+    * [http://localhost:8084/api-docs](http://localhost:8084/api-docs/index.html) 
 * Swagger
-    * [https://localhost:8081/swagger](https://localhost:8081/swagger/index.html)
-    * [http://localhost:8080/swagger](http://localhost:8080/swagger/index.html) 
+    * [https://localhost:8085/swagger](https://localhost:8085/swagger/index.html)
+    * [http://localhost:8084/swagger](http://localhost:8084/swagger/index.html) 
 
 
 #
