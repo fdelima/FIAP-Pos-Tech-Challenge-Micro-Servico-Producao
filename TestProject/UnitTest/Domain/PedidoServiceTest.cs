@@ -43,8 +43,12 @@ namespace TestProject.UnitTest.Domain
             ///Arrange
             var pedido = new Pedido
             {
+                IdPedido = Guid.NewGuid(),
                 IdDispositivo = idDispositivo,
                 PedidoItems = items,
+                Data = DateTime.Now,
+                DataStatusPedido = DateTime.Now,
+                DataStatusPagamento = DateTime.Now,
                 Status = enmPedidoStatus.RECEBIDO.ToString(),
                 StatusPagamento = enmPedidoStatusPagamento.APROVADO.ToString()
             };
@@ -94,7 +98,10 @@ namespace TestProject.UnitTest.Domain
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                PedidoItems = items,
+                Data = DateTime.Now,
+                DataStatusPedido = DateTime.Now,
+                DataStatusPagamento = DateTime.Now
             };
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);

@@ -92,15 +92,6 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         /// </summary>
         public async override Task<ModelResult> UpdateAsync(Entities.Pedido entity, string[]? businessRules = null)
         {
-            if (string.IsNullOrWhiteSpace(entity.Status) || string.IsNullOrWhiteSpace(entity.StatusPagamento)
-             || !entity.Status.Equals(enmPedidoStatus.RECEBIDO.ToString())
-             || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
-            {
-                List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
-                temp.Add($"Permitido somente pedido com status 'RECEBIDO' e status do pagamento 'APROVADO'. ");
-                businessRules = temp.ToArray();
-            }
-
             Entities.Pedido? dbEntity = await _gateway.FirstOrDefaultWithIncludeAsync(x => x.PedidoItems, x => x.IdPedido == entity.IdPedido);
 
             //TODO:Há Resolver...

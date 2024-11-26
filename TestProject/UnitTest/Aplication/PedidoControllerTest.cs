@@ -45,8 +45,12 @@ namespace TestProject.UnitTest.Aplication
             ///Arrange
             var pedido = new Pedido
             {
+                IdPedido = Guid.NewGuid(),
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                PedidoItems = items,
+                Data = DateTime.Now,
+                DataStatusPedido = DateTime.Now,
+                DataStatusPagamento = DateTime.Now
             };
 
             var aplicationController = new PedidoController(_configuration, _mediator, _validator);
@@ -98,7 +102,10 @@ namespace TestProject.UnitTest.Aplication
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                PedidoItems = items,
+                Data = DateTime.Now,
+                DataStatusPedido = DateTime.Now,
+                DataStatusPagamento = DateTime.Now,
             };
 
             var aplicationController = new PedidoController(_configuration, _mediator, _validator);
