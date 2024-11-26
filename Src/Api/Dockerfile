@@ -10,7 +10,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Src/Api/FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Api.csproj", "Src/Api/"]
-COPY ["Src/Core/Ioc/FIAP.Pos.Tech.Challenge.Ioc.csproj", "Src/Core/Ioc/"]
+COPY ["Src/Core/Ioc/FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Ioc.csproj", "Src/Core/Ioc/"]
 COPY ["Src/Core/Application/FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.csproj", "Src/Core/Application/"]
 COPY ["Src/Core/Domain/FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.csproj", "Src/Core/Domain/"]
 COPY ["Src/External/Infra/FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra.csproj", "Src/Adapter/Driven/Infra/"]
