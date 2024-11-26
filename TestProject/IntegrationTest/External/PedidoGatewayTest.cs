@@ -1,26 +1,26 @@
 ﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra.Gateways;
 using System.Linq.Expressions;
-using TestProject.IntegrationTest.Infra;
+using TestProject.Infra;
 using TestProject.MockData;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 
 namespace TestProject.IntegrationTest.External
 {
     /// <summary>
     /// Classe de teste.
     /// </summary>
-    public partial class PedidoGatewayTest : IClassFixture<TestsBase>
+    public partial class PedidoGatewayTest : IClassFixture<IntegrationTestsBase>
     {
         internal readonly SqlServerTestFixture _sqlserverTest;
 
         /// <summary>
         /// Construtor da classe de teste.
         /// </summary>
-        public PedidoGatewayTest(TestsBase data)
+        public PedidoGatewayTest(IntegrationTestsBase data)
         {
             _sqlserverTest = data._sqlserverTest;
         }
@@ -30,16 +30,26 @@ namespace TestProject.IntegrationTest.External
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 3)]
-        public async void InserirComDadosValidos(Guid idDispositivo, enmPedidoStatusPagamento statusPagamento)
+        public async void InserirComDadosValidos(Guid idDispositivo, ICollection<PedidoItem> items)
         {
-            ///Arrange
-            Pedido pedido = new Pedido
+            ///Arrange            
+            var idPedido = Guid.NewGuid();
+            var pedido = new Pedido
             {
-                IdPedido = Guid.NewGuid(),
                 IdDispositivo = idDispositivo,
+                PedidoItems = items,
+
+                //Campos preenchidos automaticamente
+                IdPedido = idPedido,
                 Status = enmPedidoStatus.RECEBIDO.ToString(),
-                StatusPagamento = statusPagamento.ToString()
+                StatusPagamento = enmPedidoStatusPagamento.PENDENTE.ToString()
             };
+
+            foreach (var item in items)
+            {
+                item.IdPedidoItem = Guid.NewGuid();
+                item.IdPedido = idPedido;
+            }
 
             //Act
             var _pedidoGateway = new BaseGateway<Pedido>(_sqlserverTest.GetDbContext());
@@ -62,14 +72,25 @@ namespace TestProject.IntegrationTest.External
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, false, 3)]
-        public async Task InserirComDadosInvalidos(Guid idDispositivo)
+        public async Task InserirComDadosInvalidos(Guid idDispositivo, ICollection<PedidoItem> items)
         {
+
             ///Arrange
-            Pedido pedido = new Pedido
+            var idPedido = Guid.NewGuid();
+            var pedido = new Pedido
             {
-                IdCliente = Guid.NewGuid(),
                 IdDispositivo = idDispositivo,
+                PedidoItems = items,
+
+                //Campos preenchidos automaticamente não passando outros campos para dar erro
+                IdPedido = idPedido,
             };
+
+            foreach (var item in items)
+            {
+                item.IdPedidoItem = Guid.NewGuid();
+                item.IdPedido = idPedido;
+            }
 
             //Act
             var _pedidoGateway = new BaseGateway<Pedido>(_sqlserverTest.GetDbContext());
@@ -93,16 +114,25 @@ namespace TestProject.IntegrationTest.External
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async void AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, enmPedidoStatusPagamento statusPagamento)
+        public async void AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
         {
             ///Arrange
-            Pedido pedido = new Pedido
+            var pedido = new Pedido
             {
-                IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
+                PedidoItems = items,
+
+                //Campos preenchidos automaticamente
+                IdPedido = idPedido,
                 Status = enmPedidoStatus.RECEBIDO.ToString(),
-                StatusPagamento = statusPagamento.ToString()
+                StatusPagamento = enmPedidoStatusPagamento.PENDENTE.ToString()
             };
+
+            foreach (var item in items)
+            {
+                item.IdPedidoItem = Guid.NewGuid();
+                item.IdPedido = idPedido;
+            }
 
             var _pedidoGateway = new BaseGateway<Pedido>(_sqlserverTest.GetDbContext());
             var result = await _pedidoGateway.InsertAsync(pedido);
@@ -111,7 +141,7 @@ namespace TestProject.IntegrationTest.External
             //Alterando
             pedido.StatusPagamento = enmPedidoStatusPagamento.PROCESSANDO.ToString();
 
-            var dbEntity = await _pedidoGateway.FindByIdAsync(idPedido);
+            var dbEntity = await _pedidoGateway.FirstOrDefaultWithIncludeAsync(x => x.PedidoItems, x => x.IdPedido == pedido.IdPedido);
 
             //Act
             await _pedidoGateway.UpdateAsync(dbEntity, pedido);
@@ -137,16 +167,25 @@ namespace TestProject.IntegrationTest.External
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async void AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo, enmPedidoStatusPagamento statusPagamento)
+        public async void AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
         {
             ///Arrange
-            Pedido pedido = new Pedido
+            var pedido = new Pedido
             {
-                IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
+                PedidoItems = items,
+
+                //Campos preenchidos automaticamente
+                IdPedido = idPedido,
                 Status = enmPedidoStatus.RECEBIDO.ToString(),
-                StatusPagamento = statusPagamento.ToString()
+                StatusPagamento = enmPedidoStatusPagamento.PENDENTE.ToString()
             };
+
+            foreach (var item in items)
+            {
+                item.IdPedidoItem = Guid.NewGuid();
+                item.IdPedido = idPedido;
+            }
 
             var _pedidoGateway = new BaseGateway<Pedido>(_sqlserverTest.GetDbContext());
             var result = await _pedidoGateway.InsertAsync(pedido);
@@ -156,7 +195,7 @@ namespace TestProject.IntegrationTest.External
             pedido.Status = null;
             pedido.StatusPagamento = null;
 
-            var dbEntity = await _pedidoGateway.FindByIdAsync(idPedido);
+            var dbEntity = await _pedidoGateway.FirstOrDefaultWithIncludeAsync(x => x.PedidoItems, x => x.IdPedido == pedido.IdPedido);
 
             //Act
             await _pedidoGateway.UpdateAsync(dbEntity, pedido);
@@ -183,23 +222,33 @@ namespace TestProject.IntegrationTest.External
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 1)]
-        public async void DeletarPedido(Guid idDispositivo, enmPedidoStatusPagamento statusPagamento)
+        public async void DeletarPedido(Guid idDispositivo, ICollection<PedidoItem> items)
         {
-            ///Arrange
-            Pedido pedido = new Pedido
+            ///Arrange            
+            var idPedido = Guid.NewGuid();
+            var pedido = new Pedido
             {
-                IdPedido = Guid.NewGuid(),
                 IdDispositivo = idDispositivo,
+                PedidoItems = items,
+
+                //Campos preenchidos automaticamente
+                IdPedido = idPedido,
                 Status = enmPedidoStatus.RECEBIDO.ToString(),
-                StatusPagamento = statusPagamento.ToString()
+                StatusPagamento = enmPedidoStatusPagamento.PENDENTE.ToString()
             };
+
+            foreach (var item in items)
+            {
+                item.IdPedidoItem = Guid.NewGuid();
+                item.IdPedido = idPedido;
+            }
 
             var _pedidoGateway = new BaseGateway<Pedido>(_sqlserverTest.GetDbContext());
             await _pedidoGateway.InsertAsync(pedido);
             await _pedidoGateway.CommitAsync();
 
             //Act
-            await _pedidoGateway.DeleteAsync(pedido.IdPedido);
+            await _pedidoGateway.DeleteAsync(idPedido);
 
             //Assert
             try
@@ -222,23 +271,33 @@ namespace TestProject.IntegrationTest.External
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 1)]
-        public async void ConsultarPedidoPorId(Guid idDispositivo, enmPedidoStatusPagamento statusPagamento)
+        public async void ConsultarPedidoPorId(Guid idDispositivo, ICollection<PedidoItem> items)
         {
-            ///Arrange
-            Pedido pedido = new Pedido
+            ///Arrange            
+            var idPedido = Guid.NewGuid();
+            var pedido = new Pedido
             {
-                IdPedido = Guid.NewGuid(),
                 IdDispositivo = idDispositivo,
+                PedidoItems = items,
+
+                //Campos preenchidos automaticamente
+                IdPedido = idPedido,
                 Status = enmPedidoStatus.RECEBIDO.ToString(),
-                StatusPagamento = statusPagamento.ToString()
+                StatusPagamento = enmPedidoStatusPagamento.PENDENTE.ToString()
             };
+
+            foreach (var item in items)
+            {
+                item.IdPedidoItem = Guid.NewGuid();
+                item.IdPedido = idPedido;
+            }
 
             var _pedidoGateway = new BaseGateway<Pedido>(_sqlserverTest.GetDbContext());
             await _pedidoGateway.InsertAsync(pedido);
             await _pedidoGateway.CommitAsync();
 
             //Act
-            var result = await _pedidoGateway.FindByIdAsync(pedido.IdPedido);
+            var result = await _pedidoGateway.FindByIdAsync(idPedido);
 
             //Assert
             Assert.True(result != null);
@@ -329,7 +388,10 @@ namespace TestProject.IntegrationTest.External
                         return PedidoMock.ObterDadosInvalidos(quantidade)
                             .Select(i => new object[] { Guid.NewGuid() }.Concat(i).ToArray());
                 case enmTipo.Consulta:
-                    return PedidoMock.ObterDadosConsulta(quantidade);
+                    if (dadosValidos)
+                        return PedidoMock.ObterDadosConsultaValidos(quantidade);
+                    else
+                        return PedidoMock.ObterDadosConsultaInValidos(quantidade);
                 default:
                     return null;
             }

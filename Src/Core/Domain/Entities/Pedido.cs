@@ -42,4 +42,5 @@ public partial class Pedido : IDomainEntity
 
     public DateTime DataStatusPagamento { get; set; }
 
+    public virtual ICollection<PedidoItem> PedidoItems { get; set; } = new List<PedidoItem>();
 }

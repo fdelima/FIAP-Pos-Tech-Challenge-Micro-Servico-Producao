@@ -2,7 +2,6 @@
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Validator;
@@ -13,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using System.Linq.Expressions;
 using TestProject.MockData;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 
 namespace TestProject.UnitTest.Aplication
 {
@@ -40,23 +40,23 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 3)]
-        public async Task InserirComDadosValidos(Guid idDispositivo, enmPedidoStatusPagamento statusPagamento)
+        public async Task InserirComDadosValidos(Guid idDispositivo, ICollection<PedidoItem> items)
         {
             ///Arrange
-            Pedido pedido = new Pedido
+            var pedido = new Pedido
             {
                 IdDispositivo = idDispositivo,
-                StatusPagamento = statusPagamento.ToString()
+                PedidoItems = items
             };
 
-            PedidoController aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
 
             //Mockando retorno do mediator.
             _mediator.Send(Arg.Any<PedidoPostCommand>())
                 .Returns(Task.FromResult(ModelResultFactory.SucessResult()));
 
             //Act
-            ModelResult result = await aplicationController.PostAsync(pedido);
+            var result = await aplicationController.PostAsync(pedido);
 
             //Assert
             Assert.True(result.IsValid);
@@ -67,18 +67,19 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, false, 3)]
-        public async Task InserirComDadosInvalidos(Guid idDispositivo)
+        public async Task InserirComDadosInvalidos(Guid idDispositivo, ICollection<PedidoItem> items)
         {
             ///Arrange
-            Pedido pedido = new Pedido
+            var pedido = new Pedido
             {
-                IdDispositivo = idDispositivo
+                IdDispositivo = idDispositivo,
+                PedidoItems = items
             };
 
-            PedidoController aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
 
             //Act
-            ModelResult result = await aplicationController.PostAsync(pedido);
+            var result = await aplicationController.PostAsync(pedido);
 
             //Assert
             Assert.False(result.IsValid);
@@ -90,24 +91,24 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, enmPedidoStatusPagamento statusPagamento)
+        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
         {
             ///Arrange
-            Pedido pedido = new Pedido
+            var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                StatusPagamento = statusPagamento.ToString()
+                PedidoItems = items
             };
 
-            PedidoController aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
 
             //Mockando retorno do mediator.
             _mediator.Send(Arg.Any<PedidoPutCommand>())
                 .Returns(Task.FromResult(ModelResultFactory.SucessResult()));
 
             //Act
-            ModelResult result = await aplicationController.PutAsync(idPedido, pedido);
+            var result = await aplicationController.PutAsync(idPedido, pedido);
 
             //Assert
             Assert.True(result.IsValid);
@@ -118,19 +119,20 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, false, 3)]
-        public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo)
+        public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
         {
             ///Arrange
-            Pedido pedido = new Pedido
+            var pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdDispositivo = idDispositivo
+                IdDispositivo = idDispositivo,
+                PedidoItems = items
             };
 
-            PedidoController aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
 
             //Act
-            ModelResult result = await aplicationController.PutAsync(idPedido, pedido);
+            var result = await aplicationController.PutAsync(idPedido, pedido);
 
             //Assert
             Assert.False(result.IsValid);
@@ -144,14 +146,14 @@ namespace TestProject.UnitTest.Aplication
         public async Task DeletarPedido(Guid idPedido)
         {
             ///Arrange
-            PedidoController aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
 
             //Mockando retorno do mediator.
             _mediator.Send(Arg.Any<PedidoDeleteCommand>())
                 .Returns(Task.FromResult(ModelResultFactory.SucessResult()));
 
             //Act
-            ModelResult result = await aplicationController.DeleteAsync(idPedido);
+            var result = await aplicationController.DeleteAsync(idPedido);
 
             //Assert
             Assert.True(result.IsValid);
@@ -165,14 +167,14 @@ namespace TestProject.UnitTest.Aplication
         public async Task ConsultarPedidoPorId(Guid idPedido)
         {
             ///Arrange
-            PedidoController aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
 
             //Mockando retorno do mediator.
             _mediator.Send(Arg.Any<PedidoFindByIdCommand>())
                 .Returns(Task.FromResult(ModelResultFactory.SucessResult()));
 
             //Act
-            ModelResult result = await aplicationController.FindByIdAsync(idPedido);
+            var result = await aplicationController.FindByIdAsync(idPedido);
 
             //Assert
             Assert.True(result.IsValid);
@@ -186,15 +188,15 @@ namespace TestProject.UnitTest.Aplication
         public async Task ConsultarPedidoComCondicao(IPagingQueryParam filter, Expression<Func<Pedido, object>> sortProp, IEnumerable<Pedido> pedidos)
         {
             ///Arrange
-            PedidoController aplicationController = new PedidoController(_configuration, _mediator, _validator);
-            PagingQueryParam<Pedido> param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
 
             //Mockando retorno do mediator.
             _mediator.Send(Arg.Any<PedidoGetItemsCommand>())
                 .Returns(Task.FromResult(new PagingQueryResult<Pedido>(new List<Pedido>(pedidos), 1, 1)));
 
             //Act
-            PagingQueryResult<Pedido> result = await aplicationController.ConsultItemsAsync(filter, param.ConsultRule(), sortProp);
+            var result = await aplicationController.ConsultItemsAsync(filter, param.ConsultRule(), sortProp);
 
             //Assert
             Assert.True(result.Content.Any());
@@ -208,15 +210,15 @@ namespace TestProject.UnitTest.Aplication
         public async Task ConsultarPedidoSemCondicao(IPagingQueryParam filter, Expression<Func<Pedido, object>> sortProp, IEnumerable<Pedido> pedidos)
         {
             ///Arrange
-            PedidoController aplicationController = new PedidoController(_configuration, _mediator, _validator);
-            PagingQueryParam<Pedido> param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
 
             //Mockando retorno do mediator.
             _mediator.Send(Arg.Any<PedidoGetItemsCommand>())
                 .Returns(Task.FromResult(new PagingQueryResult<Pedido>(new List<Pedido>(pedidos), 1, 1)));
 
             //Act
-            PagingQueryResult<Pedido> result = await aplicationController.GetItemsAsync(filter, sortProp);
+            var result = await aplicationController.GetItemsAsync(filter, sortProp);
 
             //Assert
             Assert.True(result.Content.Any());
@@ -226,19 +228,19 @@ namespace TestProject.UnitTest.Aplication
         /// Testa a consulta com condição de pesquisa Inválida
         /// </summary>
         [Theory]
-        [MemberData(nameof(ObterDados), enmTipo.Consulta, false, 3)]
+        [MemberData(nameof(ObterDados), enmTipo.Consulta, false, 10)]
         public async Task ConsultarPedidoComCondicaoInvalidos(IPagingQueryParam filter, Expression<Func<Pedido, object>> sortProp, IEnumerable<Pedido> pedidos)
         {
             ///Arrange
 
             filter = null;
-            PagingQueryParam<Pedido> param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
-            PedidoController aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
 
             //Act
             try
             {
-                PagingQueryResult<Pedido> result = await aplicationController.ConsultItemsAsync(filter, param.ConsultRule(), sortProp);
+                var result = await aplicationController.ConsultItemsAsync(filter, param.ConsultRule(), sortProp);
             }
             catch (Exception ex)
             {
@@ -251,24 +253,69 @@ namespace TestProject.UnitTest.Aplication
         /// Testa a consulta sem condição de pesquisa Inválida
         /// </summary>
         [Theory]
-        [MemberData(nameof(ObterDados), enmTipo.Consulta, false, 3)]
+        [MemberData(nameof(ObterDados), enmTipo.Consulta, false, 10)]
         public async Task ConsultarPedidoSemCondicaoInvalidos(IPagingQueryParam filter, Expression<Func<Pedido, object>> sortProp, IEnumerable<Pedido> pedidos)
         {
             ///Arrange
 
             filter = null;
-            PedidoController aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
 
             //Act
             try
             {
-                PagingQueryResult<Pedido> result = await aplicationController.GetItemsAsync(filter, sortProp);
+                var result = await aplicationController.GetItemsAsync(filter, sortProp);
             }
             catch (Exception ex)
             {
                 //Assert
                 Assert.True(ex.GetType().Equals(typeof(InvalidOperationException)));
             }
+        }
+
+
+        /// <summary>
+        /// Testa a listar pedidos válidos
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(ObterDados), enmTipo.Consulta, true, 3)]
+        public async Task ListarPedidosValidos(PagingQueryParam<Pedido> filter, Expression<Func<Pedido, object>> sortProp, IEnumerable<Pedido> pedidos)
+        {
+            ///Arrange
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
+
+            //Mockando retorno do mediator.
+            _mediator.Send(Arg.Any<PedidoGetListaCommand>())
+                .Returns(Task.FromResult(new PagingQueryResult<Pedido>(new List<Pedido>(pedidos), 1, 1)));
+
+            //Act
+            var result = await aplicationController.GetListaAsync(filter);
+
+            //Assert
+            Assert.DoesNotContain(result.Content, x => x.Status.Equals(enmPedidoStatus.FINALIZADO.ToString()));
+        }
+
+        /// <summary>
+        /// Testa a listar pedidos inválidos
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(ObterDados), enmTipo.Consulta, false, 3)]
+        public async Task ListarPedidosInvalidos(PagingQueryParam<Pedido> filter, Expression<Func<Pedido, object>> sortProp, IEnumerable<Pedido> pedidos)
+        {
+            ///Arrange
+            var aplicationController = new PedidoController(_configuration, _mediator, _validator);
+            var param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
+
+            //Mockando retorno do mediator.
+            _mediator.Send(Arg.Any<PedidoGetListaCommand>())
+                .Returns(Task.FromResult(new PagingQueryResult<Pedido>(new List<Pedido>(pedidos), 1, 1)));
+
+            //Act
+            var result = await aplicationController.GetListaAsync(filter);
+
+            //Assert
+            Assert.Contains(result.Content, x => x.Status.Equals(enmPedidoStatus.FINALIZADO.ToString()));
         }
 
         #region [ Xunit MemberData ]
@@ -293,7 +340,10 @@ namespace TestProject.UnitTest.Aplication
                         return PedidoMock.ObterDadosInvalidos(quantidade)
                             .Select(i => new object[] { Guid.NewGuid() }.Concat(i).ToArray());
                 case enmTipo.Consulta:
-                    return PedidoMock.ObterDadosConsulta(quantidade);
+                    if (dadosValidos)
+                        return PedidoMock.ObterDadosConsultaValidos(quantidade);
+                    else
+                        return PedidoMock.ObterDadosConsultaInValidos(quantidade);
                 case enmTipo.ConsultaPorId:
                     if (dadosValidos)
                         return PedidoMock.ObterDadosConsultaPorIdValidos(quantidade);

@@ -14,6 +14,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.IoC
             //Services
             services.AddScoped(typeof(IService<>), typeof(BaseService<>));
             services.AddScoped(typeof(IService<Domain.Entities.Notificacao>), typeof(NotificacaoService));
+            services.AddScoped(typeof(IService<Domain.Entities.PedidoItem>), typeof(PedidoItemService));
             services.AddScoped(typeof(IPedidoService), typeof(PedidoService));
         }
     }

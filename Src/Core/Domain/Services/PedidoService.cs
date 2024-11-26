@@ -28,6 +28,19 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         }
 
         /// <summary>
+        /// Regra para carregar o pedido e seus itens.
+        /// </summary>
+        public async override Task<ModelResult> FindByIdAsync(Guid Id)
+        {
+            Entities.Pedido? result = await _gateway.FirstOrDefaultWithIncludeAsync(x => x.PedidoItems, x => x.IdPedido == Id);
+
+            if (result == null)
+                return ModelResultFactory.NotFoundResult<Entities.Pedido>();
+
+            return ModelResultFactory.SucessResult(result);
+        }
+
+        /// <summary>
         /// Regras base para inserção.
         /// </summary>
         /// <param name="entity">Entidade</param>
@@ -35,16 +48,29 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         public override async Task<ModelResult> InsertAsync(Pedido entity, string[]? businessRules = null)
         {
 
-            if (!entity.Status.Equals(enmPedidoStatus.RECEBIDO.ToString())
+            if (string.IsNullOrWhiteSpace(entity.Status) || string.IsNullOrWhiteSpace(entity.StatusPagamento)
+                || !entity.Status.Equals(enmPedidoStatus.RECEBIDO.ToString())
                 || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
             {
                 List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
-                temp.Add($"Permitido somente pedido com status 'RECEBIDO' e status do pagamento 'APROVADO'. " +
-                    $"Pedido: {entity.IdPedido} status:{entity.Status} status pagamento: {entity.StatusPagamento}");
+                temp.Add($"Permitido somente pedido com status 'RECEBIDO' e status do pagamento 'APROVADO'. ");
                 businessRules = temp.ToArray();
             }
 
             return await base.InsertAsync(entity, businessRules);
+        }
+
+        /// <summary>
+        /// Regra para retornar os Pedidos cadastrados
+        /// A lista de pedidos deverá retorná-los com suas descrições, ordenados com a seguinte regra:
+        /// 1. Pronto > Em Preparação > Recebido;
+        /// 2. Pedidos mais antigos primeiro e mais novos depois;
+        /// 3. Pedidos com status Finalizado não devem aparecer na lista.
+        /// </summary>
+        public async ValueTask<PagingQueryResult<Entities.Pedido>> GetListaAsync(IPagingQueryParam filter)
+        {
+            filter.SortDirection = "Desc";
+            return await _gateway.GetItemsAsync(filter, x => x.Status != enmPedidoStatus.FINALIZADO.ToString(), o => o.Data);
         }
 
         /// <summary>
@@ -60,12 +86,12 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
             if (entity == null)
                 ValidatorResult = ModelResultFactory.NotFoundResult<Pedido>();
 
-            if (!entity.Status.Equals(enmPedidoStatus.RECEBIDO.ToString())
+            if (string.IsNullOrWhiteSpace(entity.Status) || string.IsNullOrWhiteSpace(entity.StatusPagamento)
+                || !entity.Status.Equals(enmPedidoStatus.RECEBIDO.ToString())
                 || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
             {
                 List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
-                temp.Add($"Permitido somente pedido com status 'RECEBIDO' e status do pagamento 'APROVADO'. " +
-                    $"Pedido: {entity.IdPedido} status:{entity.Status} status pagamento: {entity.StatusPagamento}");
+                temp.Add($"Permitido somente pedido com status 'RECEBIDO' e status do pagamento 'APROVADO'. ");
                 businessRules = temp.ToArray();
             }
 
@@ -111,12 +137,12 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
             if (entity == null)
                 ValidatorResult = ModelResultFactory.NotFoundResult<Pedido>();
 
-            if (!entity.Status.Equals(enmPedidoStatus.EM_PREPARACAO.ToString())
+            if (string.IsNullOrWhiteSpace(entity.Status) || string.IsNullOrWhiteSpace(entity.StatusPagamento)
+                || !entity.Status.Equals(enmPedidoStatus.EM_PREPARACAO.ToString())
                 || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
             {
                 List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
-                temp.Add($"Permitido somente pedido com status 'EM_PREPARACAO' e status do pagamento 'APROVADO'. " +
-                    $"Pedido: {entity.IdPedido} status:{entity.Status} status pagamento: {entity.StatusPagamento}");
+                temp.Add($"Permitido somente pedido com status 'EM_PREPARACAO' e status do pagamento 'APROVADO'. ");
                 businessRules = temp.ToArray();
             }
 
@@ -162,12 +188,12 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
             if (entity == null)
                 ValidatorResult = ModelResultFactory.NotFoundResult<Pedido>();
 
-            if (!entity.Status.Equals(enmPedidoStatus.PRONTO.ToString())
+            if (string.IsNullOrWhiteSpace(entity.Status) || string.IsNullOrWhiteSpace(entity.StatusPagamento)
+                || !entity.Status.Equals(enmPedidoStatus.PRONTO.ToString())
                 || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
             {
                 List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
-                temp.Add($"Permitido somente pedido com status 'PRONTO' e status do pagamento 'APROVADO'. " +
-                    $"Pedido: {entity.IdPedido} status:{entity.Status} status pagamento: {entity.StatusPagamento}");
+                temp.Add($"Permitido somente pedido com status 'PRONTO' e status do pagamento 'APROVADO'. ");
                 businessRules = temp.ToArray();
             }
 

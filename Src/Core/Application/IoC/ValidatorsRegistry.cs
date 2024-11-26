@@ -16,6 +16,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.IoC
 
             //Validators
             services.AddScoped(typeof(IValidator<Notificacao>), typeof(NotificacaoValidator));
+            services.AddScoped(typeof(IValidator<PedidoItem>), typeof(PedidoItemValidator));
             services.AddScoped(typeof(IValidator<Pedido>), typeof(PedidoValidator));
         }
     }

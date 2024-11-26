@@ -12,6 +12,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.IoC
         public static void RegisterAppControllers(this IServiceCollection services)
         {
             //Controlles
+            services.AddScoped(typeof(IController<Domain.Entities.Notificacao>), typeof(NotificacaoController));
             services.AddScoped(typeof(IPedidoController), typeof(PedidoController));
         }
     }

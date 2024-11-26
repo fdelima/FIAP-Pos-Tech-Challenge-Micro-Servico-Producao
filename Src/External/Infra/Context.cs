@@ -13,8 +13,9 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra
 
         public virtual DbSet<Notificacao> Notificacaos { get; set; }
 
-        public virtual DbSet<Pedido> Pedidos { get; set; }
+        public virtual DbSet<Domain.Entities.Pedido> Pedidos { get; set; }
 
+        public virtual DbSet<PedidoItem> PedidoItems { get; set; }
 
         #endregion DbSets
 
@@ -22,6 +23,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra
         {
             //TODO: Map :: 2 - Adicione sua configuração aqui
             modelBuilder.ApplyConfiguration(new NotificacaoMap());
+            modelBuilder.ApplyConfiguration(new PedidoItemMap());
             modelBuilder.ApplyConfiguration(new PedidoMap());
 
             base.OnModelCreating(modelBuilder);
