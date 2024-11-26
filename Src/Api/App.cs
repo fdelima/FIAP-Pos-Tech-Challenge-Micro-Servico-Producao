@@ -1,8 +1,10 @@
-﻿using System.Net;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Net.Sockets;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Api
 {
+    [ExcludeFromCodeCoverage(Justification = "Arquivo de configuração")]
     public class App
     {
         private static string _name = string.Empty;
