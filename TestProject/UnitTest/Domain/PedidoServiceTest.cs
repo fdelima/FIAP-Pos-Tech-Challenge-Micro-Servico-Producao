@@ -44,6 +44,7 @@ namespace TestProject.UnitTest.Domain
             var pedido = new Pedido
             {
                 IdPedido = Guid.NewGuid(),
+                IdCliente = Guid.NewGuid(),
                 IdDispositivo = idDispositivo,
                 PedidoItems = items,
                 Data = DateTime.Now,
@@ -97,6 +98,7 @@ namespace TestProject.UnitTest.Domain
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
+                IdCliente = Guid.NewGuid(),
                 IdDispositivo = idDispositivo,
                 PedidoItems = items,
                 Data = DateTime.Now,

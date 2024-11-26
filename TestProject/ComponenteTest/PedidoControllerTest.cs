@@ -1,214 +1,230 @@
-﻿//using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
-//using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
-//using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
-//using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
-//using Newtonsoft.Json;
-//using System.Net.Http.Json;
-//using TestProject.Infra;
-//using Xunit.Gherkin.Quick;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
+using Newtonsoft.Json;
+using System.Net.Http.Json;
+using TestProject.Infra;
+using Xunit.Gherkin.Quick;
 
-//namespace TestProject.ComponenteTest
-//{
-//    /// <summary>
-//    /// Classe de teste.
-//    /// </summary>
-//    [FeatureFile("./BDD/Features/ControlarPedidos.feature")]
-//    public class PedidoControllerTest : Feature, IClassFixture<ComponentTestsBase>
-//    {
-//        private readonly ApiTestFixture _apiTest;
-//        private ModelResult expectedResult;
-//        Pedido _pedido;
+namespace TestProject.ComponenteTest
+{
+    /// <summary>
+    /// Classe de teste.
+    /// </summary>
+    [FeatureFile("./BDD/Features/ControlarPedidos.feature")]
+    public class PedidoControllerTest : Feature, IClassFixture<ComponentTestsBase>
+    {
+        private readonly ApiTestFixture _apiTest;
+        private ModelResult expectedResult;
+        Pedido _pedido;
 
-//        /// <summary>
-//        /// Construtor da classe de teste.
-//        /// </summary>
-//        public PedidoControllerTest(ComponentTestsBase data)
-//        {
-//            _apiTest = data._apiTest;
-//        }
-//        private class ActionResult
-//        {
-//            public List<string> Messages { get; set; }
-//            public List<string> Errors { get; set; }
-//            public Pedido Model { get; set; }
-//            public bool IsValid { get; set; }
-//        }
+        /// <summary>
+        /// Construtor da classe de teste.
+        /// </summary>
+        public PedidoControllerTest(ComponentTestsBase data)
+        {
+            _apiTest = data._apiTest;
+        }
+        private class ActionResult
+        {
+            public List<string> Messages { get; set; }
+            public List<string> Errors { get; set; }
+            public Pedido Model { get; set; }
+            public bool IsValid { get; set; }
+        }
 
-//        [Given(@"Recebendo um pedido na lanchonete vamos preparar o pedido")]
-//        public void PrepararPedido()
-//        {
-//            var idPedido = Guid.NewGuid();
-//            _pedido = new Pedido
-//            {
-//                IdPedido = idPedido,
-//                Data = DateTime.Now,
-//                DataStatusPagamento = DateTime.Now,
-//                DataStatusPedido = DateTime.Now,
-//                Status = enmPedidoStatus.RECEBIDO.ToString(),
-//                StatusPagamento = enmPedidoStatusPagamento.APROVADO.ToString()
-//            };
-//            _pedido.IdDispositivo = Guid.NewGuid();
-//            _pedido.PedidoItems.Add(new PedidoItem()
-//            {
-//                IdPedidoItem = Guid.NewGuid(),
-//                IdPedido = idPedido,
-//                IdProduto = Guid.Parse("f724910b-ed6d-41a2-ab52-da4cd26ba413"),
-//                Quantidade = 1
-//            });
-//            _pedido.PedidoItems.Add(new PedidoItem
-//            {
-//                IdPedidoItem = Guid.NewGuid(),
-//                IdPedido = idPedido,
-//                IdProduto = Guid.Parse("802be132-64ef-4737-9de7-c83298c70a73"),
-//                Quantidade = 1
-//            });
-//            _pedido.PedidoItems.Add(new PedidoItem
-//            {
-//                IdPedidoItem = Guid.NewGuid(),
-//                IdPedido = idPedido,
-//                IdProduto = Guid.Parse("f44b20ab-a453-4579-accf-d94d7075f508"),
-//                Quantidade = 1
-//            });
-//        }
+        [Given(@"Recebendo um pedido na lanchonete vamos preparar o pedido")]
+        public void PrepararPedido()
+        {
+            var idPedido = Guid.NewGuid();
+            _pedido = new Pedido
+            {
+                IdPedido = idPedido,
+                IdCliente = Guid.NewGuid(),
+                Data = DateTime.Now,
+                DataStatusPagamento = DateTime.Now,
+                DataStatusPedido = DateTime.Now,
+                Status = enmPedidoStatus.RECEBIDO.ToString(),
+                StatusPagamento = enmPedidoStatusPagamento.APROVADO.ToString()
+            };
+            _pedido.IdDispositivo = Guid.NewGuid();
+            _pedido.PedidoItems.Add(new PedidoItem()
+            {
+                IdPedidoItem = Guid.NewGuid(),
+                IdPedido = idPedido,
+                IdProduto = Guid.Parse("f724910b-ed6d-41a2-ab52-da4cd26ba413"),
+                Quantidade = 1
+            });
+            _pedido.PedidoItems.Add(new PedidoItem
+            {
+                IdPedidoItem = Guid.NewGuid(),
+                IdPedido = idPedido,
+                IdProduto = Guid.Parse("802be132-64ef-4737-9de7-c83298c70a73"),
+                Quantidade = 1
+            });
+            _pedido.PedidoItems.Add(new PedidoItem
+            {
+                IdPedidoItem = Guid.NewGuid(),
+                IdPedido = idPedido,
+                IdProduto = Guid.Parse("f44b20ab-a453-4579-accf-d94d7075f508"),
+                Quantidade = 1
+            });
+        }
 
-//        [And(@"Adicionar o pedido")]
-//        public async Task AdicionarPedido()
-//        {
-//            expectedResult = ModelResultFactory.InsertSucessResult<Pedido>(_pedido);
+        [And(@"Adicionar o pedido")]
+        public async Task AdicionarPedido()
+        {
+            expectedResult = ModelResultFactory.InsertSucessResult<Pedido>(_pedido);
 
-//            var client = _apiTest.GetClient();
-//            HttpResponseMessage response = await client.PostAsJsonAsync(
-//                "api/producao/pedido/InserirRecebido", _pedido);
+            var client = _apiTest.GetClient();
+            HttpResponseMessage response = await client.PostAsJsonAsync(
+                "api/producao/pedido/InserirRecebido", _pedido);
 
-//            var responseContent = await response.Content.ReadAsStringAsync();
-//            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
 
-//            _pedido = actualResult.Model;
+            _pedido = actualResult.Model;
 
-//            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
-//            Assert.Equal(expectedResult.Messages, actualResult.Messages);
-//            Assert.Equal(expectedResult.Errors, actualResult.Errors);
+            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
+            Assert.Equal(expectedResult.Messages, actualResult.Messages);
+            Assert.Equal(expectedResult.Errors, actualResult.Errors);
 
-//            Assert.True(true);
-//        }
+            Assert.True(true);
+        }
 
-//        [And(@"Encontrar o pedido")]
-//        public async Task EncontrarPedido()
-//        {
-//            expectedResult = ModelResultFactory.SucessResult(_pedido);
+        [And(@"Encontrar o pedido")]
+        public async Task EncontrarPedido()
+        {
+            expectedResult = ModelResultFactory.SucessResult(_pedido);
 
-//            var client = _apiTest.GetClient();
-//            HttpResponseMessage response = await client.GetAsync(
-//                $"api/producao/pedido/{_pedido.IdPedido}");
+            var client = _apiTest.GetClient();
+            HttpResponseMessage response = await client.GetAsync(
+                $"api/producao/pedido/{_pedido.IdPedido}");
 
-//            var responseContent = await response.Content.ReadAsStringAsync();
-//            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
-//            _pedido = actualResult.Model;
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
+            _pedido = actualResult.Model;
 
-//            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
-//            Assert.Equal(expectedResult.Messages, actualResult.Messages);
-//            Assert.Equal(expectedResult.Errors, actualResult.Errors);
-//        }
+            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
+            Assert.Equal(expectedResult.Messages, actualResult.Messages);
+            Assert.Equal(expectedResult.Errors, actualResult.Errors);
+        }
 
-//        [And(@"Alterar o pedido")]
-//        public async Task AlterarPedido()
-//        {
-//            expectedResult = ModelResultFactory.UpdateSucessResult<Pedido>(_pedido);
+        [And(@"Alterar o pedido")]
+        public async Task AlterarPedido()
+        {
+            expectedResult = ModelResultFactory.UpdateSucessResult<Pedido>(_pedido);
 
-//            var client = _apiTest.GetClient();
-//            HttpResponseMessage response = await client.PutAsJsonAsync(
-//                $"api/producao/pedido/{_pedido.IdPedido}", _pedido);
+            var client = _apiTest.GetClient();
+            HttpResponseMessage response = await client.PutAsJsonAsync(
+                $"api/producao/pedido/{_pedido.IdPedido}", _pedido);
 
-//            var responseContent = await response.Content.ReadAsStringAsync();
-//            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
-//            _pedido = actualResult.Model;
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
+            _pedido = actualResult.Model;
 
-//            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
-//            Assert.Equal(expectedResult.Messages, actualResult.Messages);
-//            Assert.Equal(expectedResult.Errors, actualResult.Errors);
-//        }
+            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
+            Assert.Equal(expectedResult.Messages, actualResult.Messages);
+            Assert.Equal(expectedResult.Errors, actualResult.Errors);
+        }
 
-//        [And(@"Consultar o pedido")]
-//        public async Task ConsultarPedido()
-//        {
-//            var client = _apiTest.GetClient();
-//            HttpResponseMessage response = await client.PostAsJsonAsync(
-//                $"api/producao/pedido/consult", new PagingQueryParam<Pedido> { ObjFilter = _pedido });
+        [And(@"Consultar o pedido")]
+        public async Task ConsultarPedido()
+        {
+            var client = _apiTest.GetClient();
+            HttpResponseMessage response = await client.PostAsJsonAsync(
+                $"api/producao/pedido/consult", new PagingQueryParam<Pedido> { ObjFilter = _pedido });
 
-//            var responseContent = await response.Content.ReadAsStringAsync();
-//            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
 
-//            Assert.True(actualResult.content != null);
-//        }
+            Assert.True(actualResult.content != null);
+        }
 
-//        [And(@"Listar o pedido")]
-//        public async Task ListarPardido()
-//        {
-//            var client = _apiTest.GetClient();
-//            HttpResponseMessage response = await client.GetAsync(
-//                $"api/producao/pedido/Lista");
+        [And(@"Listar o pedido")]
+        public async Task ListarPardido()
+        {
+            var client = _apiTest.GetClient();
+            HttpResponseMessage response = await client.GetAsync(
+                $"api/producao/pedido/Lista");
 
-//            var responseContent = await response.Content.ReadAsStringAsync();
-//            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
 
-//            Assert.True(actualResult.content != null);
-//        }
+            Assert.True(actualResult.content != null);
+        }
 
-//        [And(@"Iniciar preparação do pedido")]
-//        public async Task IniciarPreparacaoPedido()
-//        {
-//            var client = _apiTest.GetClient();
-//            HttpResponseMessage response = await client.PatchAsJsonAsync(
-//                $"api/producao/pedido/IniciarPreparacao", _pedido);
+        [And(@"Iniciar preparação do pedido")]
+        public async Task IniciarPreparacaoPedido()
+        {
+            expectedResult = ModelResultFactory.UpdateSucessResult<Pedido>(_pedido);
+            
+            var client = _apiTest.GetClient();
+            HttpResponseMessage response = await client.PatchAsJsonAsync(
+                $"api/producao/pedido/{_pedido.IdPedido}/IniciarPreparacao", _pedido.IdPedido);
 
-//            var responseContent = await response.Content.ReadAsStringAsync();
-//            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
+            _pedido = actualResult.Model;
 
-//            Assert.True(actualResult.content != null);
-//        }
+            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
+            Assert.Equal(expectedResult.Messages, actualResult.Messages);
+            Assert.Equal(expectedResult.Errors, actualResult.Errors);
+        }
 
-//        [And(@"Finalizar preparação do pedido")]
-//        public async Task FinalizarPreparacaoPedido()
-//        {
-//            var client = _apiTest.GetClient();
-//            HttpResponseMessage response = await client.PatchAsJsonAsync(
-//                $"api/producao/pedido/FinalizarPreparacao", _pedido);
+        [And(@"Finalizar preparação do pedido")]
+        public async Task FinalizarPreparacaoPedido()
+        {
+            expectedResult = ModelResultFactory.UpdateSucessResult<Pedido>(_pedido);
+           
+            var client = _apiTest.GetClient();
+            HttpResponseMessage response = await client.PatchAsJsonAsync(
+                $"api/producao/pedido/{_pedido.IdPedido}/FinalizarPreparacao", _pedido.IdPedido);
 
-//            var responseContent = await response.Content.ReadAsStringAsync();
-//            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
+            _pedido = actualResult.Model;
 
-//            Assert.True(actualResult.content != null);
-//        }
+            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
+            Assert.Equal(expectedResult.Messages, actualResult.Messages);
+            Assert.Equal(expectedResult.Errors, actualResult.Errors);
+        }
 
-//        [When(@"Finalizar o pedido")]
-//        public async Task FinalizarPedido()
-//        {
-//            var client = _apiTest.GetClient();
-//            HttpResponseMessage response = await client.PatchAsJsonAsync(
-//                $"api/producao/pedido/Finalizar", _pedido);
+        [When(@"Finalizar o pedido")]
+        public async Task FinalizarPedido()
+        {
+            expectedResult = ModelResultFactory.UpdateSucessResult<Pedido>(_pedido);
 
-//            var responseContent = await response.Content.ReadAsStringAsync();
-//            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
+            var client = _apiTest.GetClient();
+            HttpResponseMessage response = await client.PatchAsJsonAsync(
+                $"api/producao/pedido/{_pedido.IdPedido}/Finalizar", _pedido.IdPedido);
 
-//            Assert.True(actualResult.content != null);
-//        }
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
+            _pedido = actualResult.Model;
 
-//        [Then(@"posso deletar o pedido")]
-//        public async Task DeletarPedido()
-//        {
-//            expectedResult = ModelResultFactory.DeleteSucessResult<Pedido>();
+            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
+            Assert.Equal(expectedResult.Messages, actualResult.Messages);
+            Assert.Equal(expectedResult.Errors, actualResult.Errors);
+        }
 
-//            var client = _apiTest.GetClient();
-//            HttpResponseMessage response = await client.DeleteAsync(
-//                $"api/producao/pedido/{_pedido.IdPedido}");
+        [Then(@"posso deletar o pedido")]
+        public async Task DeletarPedido()
+        {
+            expectedResult = ModelResultFactory.DeleteSucessResult<Pedido>();
 
-//            var responseContent = await response.Content.ReadAsStringAsync();
-//            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
-//            _pedido = null;
+            var client = _apiTest.GetClient();
+            HttpResponseMessage response = await client.DeleteAsync(
+                $"api/producao/pedido/{_pedido.IdPedido}");
 
-//            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
-//            Assert.Equal(expectedResult.Messages, actualResult.Messages);
-//            Assert.Equal(expectedResult.Errors, actualResult.Errors);
-//        }
-//    }
-//}
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
+            _pedido = null;
+
+            Assert.Equal(expectedResult.IsValid, actualResult.IsValid);
+            Assert.Equal(expectedResult.Messages, actualResult.Messages);
+            Assert.Equal(expectedResult.Errors, actualResult.Errors);
+        }
+    }
+}
