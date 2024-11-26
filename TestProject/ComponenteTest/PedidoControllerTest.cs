@@ -62,7 +62,7 @@
 
 //            var client = _apiTest.GetClient();
 //            HttpResponseMessage response = await client.PostAsJsonAsync(
-//                "api/pedido/checkout", _pedido);
+//                "api/producao/pedido/InserirRecebido", _pedido);
 
 //            var responseContent = await response.Content.ReadAsStringAsync();
 //            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
@@ -83,7 +83,7 @@
 
 //            var client = _apiTest.GetClient();
 //            HttpResponseMessage response = await client.GetAsync(
-//                $"api/pedido/{_pedido.IdPedido}");
+//                $"api/producao/pedido/{_pedido.IdPedido}");
 
 //            var responseContent = await response.Content.ReadAsStringAsync();
 //            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
@@ -101,7 +101,7 @@
 
 //            var client = _apiTest.GetClient();
 //            HttpResponseMessage response = await client.PutAsJsonAsync(
-//                $"api/pedido/{_pedido.IdPedido}", _pedido);
+//                $"api/producao/pedido/{_pedido.IdPedido}", _pedido);
 
 //            var responseContent = await response.Content.ReadAsStringAsync();
 //            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
@@ -117,7 +117,7 @@
 //        {
 //            var client = _apiTest.GetClient();
 //            HttpResponseMessage response = await client.PostAsJsonAsync(
-//                $"api/pedido/consult", new PagingQueryParam<Pedido> { ObjFilter = _pedido });
+//                $"api/producao/pedido/consult", new PagingQueryParam<Pedido> { ObjFilter = _pedido });
 
 //            var responseContent = await response.Content.ReadAsStringAsync();
 //            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
@@ -125,12 +125,51 @@
 //            Assert.True(actualResult.content != null);
 //        }
 
-//        [When(@"Listar o pedido")]
+//        [And(@"Listar o pedido")]
 //        public async Task ListarPardido()
 //        {
 //            var client = _apiTest.GetClient();
 //            HttpResponseMessage response = await client.GetAsync(
-//                $"api/pedido/Lista");
+//                $"api/producao/pedido/Lista");
+
+//            var responseContent = await response.Content.ReadAsStringAsync();
+//            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
+
+//            Assert.True(actualResult.content != null);
+//        }
+
+//        [And(@"Iniciar preparação do pedido")]
+//        public async Task IniciarPreparacaoPedido()
+//        {
+//            var client = _apiTest.GetClient();
+//            HttpResponseMessage response = await client.PatchAsJsonAsync(
+//                $"api/producao/pedido/IniciarPreparacao", _pedido);
+
+//            var responseContent = await response.Content.ReadAsStringAsync();
+//            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
+
+//            Assert.True(actualResult.content != null);
+//        }
+
+//        [And(@"Finalizar preparação do pedido")]
+//        public async Task FinalizarPreparacaoPedido()
+//        {
+//            var client = _apiTest.GetClient();
+//            HttpResponseMessage response = await client.PatchAsJsonAsync(
+//                $"api/producao/pedido/FinalizarPreparacao", _pedido);
+
+//            var responseContent = await response.Content.ReadAsStringAsync();
+//            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
+
+//            Assert.True(actualResult.content != null);
+//        }
+
+//        [When(@"Finalizar o pedido")]
+//        public async Task FinalizarPedido()
+//        {
+//            var client = _apiTest.GetClient();
+//            HttpResponseMessage response = await client.PatchAsJsonAsync(
+//                $"api/producao/pedido/Finalizar", _pedido);
 
 //            var responseContent = await response.Content.ReadAsStringAsync();
 //            dynamic actualResult = JsonConvert.DeserializeObject(responseContent);
@@ -145,7 +184,7 @@
 
 //            var client = _apiTest.GetClient();
 //            HttpResponseMessage response = await client.DeleteAsync(
-//                $"api/pedido/{_pedido.IdPedido}");
+//                $"api/producao/pedido/{_pedido.IdPedido}");
 
 //            var responseContent = await response.Content.ReadAsStringAsync();
 //            var actualResult = JsonConvert.DeserializeObject<ActionResult>(responseContent);
