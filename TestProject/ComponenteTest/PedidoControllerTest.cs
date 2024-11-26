@@ -1,6 +1,7 @@
 ﻿//using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 //using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
 //using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
+//using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
 //using Newtonsoft.Json;
 //using System.Net.Http.Json;
 //using TestProject.Infra;
@@ -36,20 +37,35 @@
 //        [Given(@"Recebendo um pedido na lanchonete vamos preparar o pedido")]
 //        public void PrepararPedido()
 //        {
-//            _pedido = new Pedido();
+//            var idPedido = Guid.NewGuid();
+//            _pedido = new Pedido
+//            {
+//                IdPedido = idPedido,
+//                Data = DateTime.Now,
+//                DataStatusPagamento = DateTime.Now,
+//                DataStatusPedido = DateTime.Now,
+//                Status = enmPedidoStatus.RECEBIDO.ToString(),
+//                StatusPagamento = enmPedidoStatusPagamento.APROVADO.ToString()
+//            };
 //            _pedido.IdDispositivo = Guid.NewGuid();
 //            _pedido.PedidoItems.Add(new PedidoItem()
 //            {
+//                IdPedidoItem = Guid.NewGuid(),
+//                IdPedido = idPedido,
 //                IdProduto = Guid.Parse("f724910b-ed6d-41a2-ab52-da4cd26ba413"),
 //                Quantidade = 1
 //            });
 //            _pedido.PedidoItems.Add(new PedidoItem
 //            {
+//                IdPedidoItem = Guid.NewGuid(),
+//                IdPedido = idPedido,
 //                IdProduto = Guid.Parse("802be132-64ef-4737-9de7-c83298c70a73"),
 //                Quantidade = 1
 //            });
 //            _pedido.PedidoItems.Add(new PedidoItem
 //            {
+//                IdPedidoItem = Guid.NewGuid(),
+//                IdPedido = idPedido,
 //                IdProduto = Guid.Parse("f44b20ab-a453-4579-accf-d94d7075f508"),
 //                Quantidade = 1
 //            });

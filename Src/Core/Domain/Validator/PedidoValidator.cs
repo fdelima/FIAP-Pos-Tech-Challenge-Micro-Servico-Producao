@@ -13,7 +13,11 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Validator
         /// </summary>
         public PedidoValidator()
         {
+            RuleFor(c => c.IdPedido).NotEmpty().WithMessage(ValidationMessages.RequiredField);
             RuleFor(c => c.IdDispositivo).NotEmpty().WithMessage(ValidationMessages.RequiredField);
+            RuleFor(c => c.Data).NotEmpty().WithMessage(ValidationMessages.RequiredField);
+            RuleFor(c => c.DataStatusPagamento).NotEmpty().WithMessage(ValidationMessages.RequiredField);
+            RuleFor(c => c.DataStatusPedido).NotEmpty().WithMessage(ValidationMessages.RequiredField);
             RuleFor(c => c.PedidoItems).Must(x => x.Count() > 0).WithMessage(ValidationMessages.OneMandatoryItem);
             RuleForEach(c => c.PedidoItems).SetValidator(x => new PedidoItemValidator());
         }

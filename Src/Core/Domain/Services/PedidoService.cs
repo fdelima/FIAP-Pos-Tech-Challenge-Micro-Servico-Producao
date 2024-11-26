@@ -41,23 +41,91 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         }
 
         /// <summary>
-        /// Regras base para inserção.
+        /// Regras para inserção do pedido
         /// </summary>
         /// <param name="entity">Entidade</param>
         /// <param name="ValidatorResult">Validações já realizadas a serem adicionadas ao contexto</param>
-        public override async Task<ModelResult> InsertAsync(Pedido entity, string[]? businessRules = null)
+        public override async Task<ModelResult> InsertAsync(Entities.Pedido entity, string[]? businessRules = null)
         {
+            List<string> lstWarnings = new List<string>();
 
             if (string.IsNullOrWhiteSpace(entity.Status) || string.IsNullOrWhiteSpace(entity.StatusPagamento)
-                || !entity.Status.Equals(enmPedidoStatus.RECEBIDO.ToString())
-                || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
+              || !entity.Status.Equals(enmPedidoStatus.RECEBIDO.ToString())
+              || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
             {
                 List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
                 temp.Add($"Permitido somente pedido com status 'RECEBIDO' e status do pagamento 'APROVADO'. ");
                 businessRules = temp.ToArray();
             }
 
-            return await base.InsertAsync(entity, businessRules);
+            if (businessRules != null)
+                lstWarnings.AddRange(businessRules);
+
+            //TODO:Há Resolver...
+            //if (!await _dispositivoGateway.Any(x => ((Dispositivo)x).IdDispositivo.Equals(entity.IdDispositivo)))
+            //    lstWarnings.Add(BusinessMessages.NotFoundInError<Dispositivo>(entity.IdDispositivo));
+
+            //TODO:Há Resolver...
+            //if (!await _clienteGateway.Any(x => ((Cliente)x).IdCliente.Equals(entity.IdCliente)))
+            //    lstWarnings.Add(BusinessMessages.NotFoundInError<Cliente>(entity.IdDispositivo));
+
+            foreach (PedidoItem itemPedido in entity.PedidoItems)
+            {
+                //TODO:Há Resolver...
+                //if (!await _produtoGateway.Any(x => ((Produto)x).IdProduto.Equals(itemPedido.IdProduto)))
+                //    lstWarnings.Add(BusinessMessages.NotFoundInError<Produto>(entity.IdDispositivo));
+            }
+
+            await _gateway.InsertAsync(new Notificacao
+            {
+                IdNotificacao = Guid.NewGuid(),
+                Data = DateTime.Now,
+                IdDispositivo = entity.IdDispositivo,
+                Mensagem = $"Pedido recebido."
+            });
+
+            return await base.InsertAsync(entity, lstWarnings.ToArray());
+        }
+
+        /// <summary>
+        /// Regra para atualização do pedido e suas dependências.
+        /// </summary>
+        public async override Task<ModelResult> UpdateAsync(Entities.Pedido entity, string[]? businessRules = null)
+        {
+            if (string.IsNullOrWhiteSpace(entity.Status) || string.IsNullOrWhiteSpace(entity.StatusPagamento)
+             || !entity.Status.Equals(enmPedidoStatus.RECEBIDO.ToString())
+             || !entity.StatusPagamento.Equals(enmPedidoStatusPagamento.APROVADO.ToString()))
+            {
+                List<string> temp = businessRules == null ? new List<string>() : new List<string>(businessRules);
+                temp.Add($"Permitido somente pedido com status 'RECEBIDO' e status do pagamento 'APROVADO'. ");
+                businessRules = temp.ToArray();
+            }
+
+            Entities.Pedido? dbEntity = await _gateway.FirstOrDefaultWithIncludeAsync(x => x.PedidoItems, x => x.IdPedido == entity.IdPedido);
+
+            //TODO:Há Resolver...
+            //if (dbEntity == null)
+            //    return ModelResultFactory.NotFoundResult<Produto>();
+
+            for (int i = 0; i < dbEntity.PedidoItems.Count; i++)
+            {
+                PedidoItem item = dbEntity.PedidoItems.ElementAt(i);
+                if (!entity.PedidoItems.Any(x => x.IdPedidoItem.Equals(item.IdPedidoItem)))
+                    dbEntity.PedidoItems.Remove(dbEntity.PedidoItems.First(x => x.IdPedidoItem.Equals(item.IdPedidoItem)));
+            }
+
+            for (int i = 0; i < entity.PedidoItems.Count; i++)
+            {
+                PedidoItem item = entity.PedidoItems.ElementAt(i);
+                if (!dbEntity.PedidoItems.Any(x => x.IdPedidoItem.Equals(item.IdPedidoItem)))
+                {
+                    item.IdPedidoItem = item.IdPedidoItem.Equals(default) ? Guid.NewGuid() : item.IdPedidoItem;
+                    dbEntity.PedidoItems.Add(item);
+                }
+            }
+
+            await _gateway.UpdateAsync(dbEntity, entity);
+            return await base.UpdateAsync(dbEntity, businessRules);
         }
 
         /// <summary>
