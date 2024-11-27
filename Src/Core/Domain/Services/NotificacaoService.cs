@@ -26,6 +26,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         public override async Task<ModelResult> InsertAsync(Notificacao entity, string[]? businessRules = null)
         {
             entity.IdNotificacao = entity.IdNotificacao.Equals(default) ? Guid.NewGuid() : entity.IdNotificacao;
+            entity.Data = DateTime.Now;
             return await base.InsertAsync(entity, businessRules);
         }
     }

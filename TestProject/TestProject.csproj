@@ -35,6 +35,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="BDD\Features\ControlarNotificacaos.feature">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="BDD\Features\ControlarPedidos.feature">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>

@@ -18,11 +18,7 @@ namespace TestProject.MockData
                 yield return new object[]
                 {
                     Guid.NewGuid(),
-                    new Notificacao
-                    {
-                        IdNotificacao = Guid.NewGuid(),
-                        Mensagem = "Mensagem de teste",
-                    }
+                    "Mensagem de teste",
                 };
         }
 
@@ -35,11 +31,7 @@ namespace TestProject.MockData
                 yield return new object[]
                 {
                     Guid.Empty,
-                    new Notificacao
-                    {
-                        IdNotificacao = Guid.Empty,
-                        Mensagem = null
-                    }
+                    null
                 };
         }
 
@@ -97,6 +89,30 @@ namespace TestProject.MockData
                     notificacoes
                 };
             }
+        }
+
+        /// <summary>
+        /// Mock de dados Válidos
+        /// </summary>
+        public static IEnumerable<object[]> ObterDadosConsultaPorIdValidos(int quantidade)
+        {
+            for (var index = 1; index <= quantidade; index++)
+                yield return new object[]
+                {
+                    Guid.NewGuid()
+                };
+        }
+
+        /// <summary>
+        /// Mock de dados inválidos
+        /// </summary>
+        public static IEnumerable<object[]> ObterDadosConsultaPorIdInvalidos(int quantidade)
+        {
+            for (var index = 1; index <= quantidade; index++)
+                yield return new object[]
+                {
+                    Guid.Empty
+                };
         }
     }
 }

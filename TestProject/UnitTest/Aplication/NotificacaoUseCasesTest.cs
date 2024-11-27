@@ -28,10 +28,14 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 3)]
-        public async Task InserirComDadosValidos(Guid idDispositivo, Notificacao notificacao)
+        public async Task InserirComDadosValidos(Guid idDispositivo, string mensagem)
         {
-            //Arrange
-            notificacao.IdDispositivo = idDispositivo;
+            ///Arrange
+            var notificacao = new Notificacao
+            {
+                IdDispositivo = idDispositivo,
+                Mensagem = mensagem
+            };
             var command = new NotificacaoPostCommand(notificacao);
 
             //Mockando retorno do serviço de domínio.
@@ -51,10 +55,14 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, false, 3)]
-        public async Task InserirComDadosInvalidos(Guid idDispositivo, Notificacao notificacao)
+        public async Task InserirComDadosInvalidos(Guid idDispositivo, string mensagem)
         {
-            //Arrange
-            notificacao.IdDispositivo = idDispositivo;
+            ///Arrange
+            var notificacao = new Notificacao
+            {
+                IdDispositivo = idDispositivo,
+                Mensagem = mensagem
+            };
             var command = new NotificacaoPostCommand(notificacao);
 
             //Mockando retorno do serviço de domínio.
@@ -74,10 +82,15 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task AlterarComDadosValidos(Guid idNotificacao, Guid idDispositivo, Notificacao notificacao)
+        public async Task AlterarComDadosValidos(Guid idNotificacao, Guid idDispositivo, string mensagem)
         {
-            //Arrange
-            notificacao.IdNotificacao = idNotificacao;
+            ///Arrange
+            var notificacao = new Notificacao
+            {
+                IdNotificacao = idNotificacao,
+                IdDispositivo = idDispositivo,
+                Mensagem = mensagem
+            };
             notificacao.IdDispositivo = idDispositivo;
 
             var command = new NotificacaoPutCommand(idNotificacao, notificacao);
@@ -99,11 +112,15 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, false, 3)]
-        public async Task AlterarComDadosInvalidos(Guid idNotificacao, Guid idDispositivo, Notificacao notificacao)
+        public async Task AlterarComDadosInvalidos(Guid idNotificacao, Guid idDispositivo, string mensagem)
         {
-            //Arrange
-            notificacao.IdNotificacao = idNotificacao;
-            notificacao.IdDispositivo = idDispositivo;
+            ///Arrange
+            var notificacao = new Notificacao
+            {
+                IdNotificacao = idNotificacao,
+                IdDispositivo = idDispositivo,
+                Mensagem = mensagem
+            };
 
             var command = new NotificacaoPutCommand(idNotificacao, notificacao);
 
@@ -124,11 +141,15 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task DeletarNotificacao(Guid idNotificacao, Guid idDispositivo, Notificacao notificacao)
+        public async Task DeletarNotificacao(Guid idNotificacao, Guid idDispositivo, string mensagem)
         {
-            //Arrange
-            notificacao.IdNotificacao = idNotificacao;
-            notificacao.IdDispositivo = idDispositivo;
+            ///Arrange
+            var notificacao = new Notificacao
+            {
+                IdNotificacao = idNotificacao,
+                IdDispositivo = idDispositivo,
+                Mensagem = mensagem
+            };
 
             var command = new NotificacaoDeleteCommand(idNotificacao);
 
@@ -152,11 +173,15 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task ConsultarNotificacaoPorId(Guid idNotificacao, Guid idDispositivo, Notificacao notificacao)
+        public async Task ConsultarNotificacaoPorId(Guid idNotificacao, Guid idDispositivo, string mensagem)
         {
-            //Arrange
-            notificacao.IdNotificacao = idNotificacao;
-            notificacao.IdDispositivo = idDispositivo;
+            ///Arrange
+            var notificacao = new Notificacao
+            {
+                IdNotificacao = idNotificacao,
+                IdDispositivo = idDispositivo,
+                Mensagem = mensagem
+            };
 
             var command = new NotificacaoFindByIdCommand(idNotificacao);
 

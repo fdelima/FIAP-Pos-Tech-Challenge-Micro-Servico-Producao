@@ -2,8 +2,6 @@
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Notificacao.Handlers;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Handlers;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.PedidoItem.Commands;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.PedidoItem.Handlers;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
@@ -22,7 +20,6 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.IoC
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
-
             //Notificacao
             services.AddScoped<IRequestHandler<NotificacaoPostCommand, ModelResult>, NotificacaoPostHandler>();
             services.AddScoped<IRequestHandler<NotificacaoPutCommand, ModelResult>, NotificacaoPutHandler>();
@@ -40,13 +37,6 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.IoC
             services.AddScoped<IRequestHandler<PedidoIniciarPreparacaCommand, ModelResult>, PedidoIniciarPreparacaHandler>();
             services.AddScoped<IRequestHandler<PedidoFinalizarPreparacaCommand, ModelResult>, PedidoFinalizarPreparacaHandler>();
             services.AddScoped<IRequestHandler<PedidoFinalizarCommand, ModelResult>, PedidoFinalizarHandler>();
-           
-            //Pedido Item
-            services.AddScoped<IRequestHandler<PedidoItemPostCommand, ModelResult>, PedidoItemPostHandler>();
-            services.AddScoped<IRequestHandler<PedidoItemPutCommand, ModelResult>, PedidoItemPutHandler>();
-            services.AddScoped<IRequestHandler<PedidoItemDeleteCommand, ModelResult>, PedidoItemDeleteHandler>();
-            services.AddScoped<IRequestHandler<PedidoItemFindByIdCommand, ModelResult>, PedidoItemFindByIdHandler>();
-            services.AddScoped<IRequestHandler<PedidoItemGetItemsCommand, PagingQueryResult<PedidoItem>>, PedidoItemGetItemsHandler>();
        
         }
     }

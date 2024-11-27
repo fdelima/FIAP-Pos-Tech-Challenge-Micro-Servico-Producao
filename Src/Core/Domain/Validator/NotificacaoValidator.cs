@@ -14,6 +14,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Validator
         /// </summary>
         public NotificacaoValidator()
         {
+            RuleFor(c => c.IdDispositivo).NotEmpty().WithMessage(ValidationMessages.RequiredField);
             RuleFor(c => c.Mensagem).NotEmpty().WithMessage(ValidationMessages.RequiredField);
         }
     }
