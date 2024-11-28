@@ -53,12 +53,15 @@ namespace TestProject.IntegrationTest.External
 
             //Act
             var _pedidoGateway = new BaseGateway<Pedido>(_sqlserverTest.GetDbContext());
+            var trans = _pedidoGateway.BeginTransaction();
+            _pedidoGateway.UseTransaction(trans);
             var result = await _pedidoGateway.InsertAsync(pedido);
 
             //Assert
             try
             {
                 await _pedidoGateway.CommitAsync();
+                trans.Commit();
                 Assert.True(true);
             }
             catch (InvalidOperationException)
@@ -218,7 +221,7 @@ namespace TestProject.IntegrationTest.External
         }
 
         /// <summary>
-        /// Testa a consulta por id
+        /// Testa a deletar por id
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 1)]

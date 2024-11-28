@@ -4,10 +4,6 @@ Feature: ControlarNotificacaos
 	Adicionar um notificacao
 	Alterar um notificacao
 	Consultar um notificacao
-	Listar os notificacaos
-	Iniciar preparação do notificacao
-	Finalizar preparação do notificacao
-	Finalizar o notificacao
 	Deletar um notificacao
 
 Scenario: Controlar notificacaos
@@ -15,9 +11,5 @@ Scenario: Controlar notificacaos
 	And Adicionar o notificacao
 	And Encontrar o notificacao
 	And Alterar o notificacao
-	And Consultar o notificacao
-	And Listar o notificacao
-	And Iniciar preparação do notificacao
-	And Finalizar preparação do notificacao
-	When Finalizar o notificacao
+	When Consultar o notificacao
 	Then posso deletar o notificacao

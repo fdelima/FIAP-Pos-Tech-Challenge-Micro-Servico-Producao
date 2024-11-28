@@ -14,7 +14,9 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Validator
         /// </summary>
         public PedidoItemValidator()
         {
-            RuleFor(c => c.IdPedido).NotNull().WithMessage(ValidationMessages.RequiredField);
+            RuleFor(c => c.IdPedidoItem).NotEmpty().WithMessage(ValidationMessages.RequiredField);
+            RuleFor(c => c.Data).NotEmpty().WithMessage(ValidationMessages.RequiredField);
+            RuleFor(c => c.IdPedidoItem).NotEmpty().WithMessage(ValidationMessages.RequiredField);
             RuleFor(c => c.IdProduto).NotEmpty().WithMessage(ValidationMessages.RequiredField);
             RuleFor(c => c.Quantidade).NotEmpty().WithMessage(ValidationMessages.RequiredField);
         }

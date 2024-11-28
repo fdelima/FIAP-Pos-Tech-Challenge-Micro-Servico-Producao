@@ -1,12 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace TestProject.Infra
+﻿namespace TestProject.Infra
 {
     public class ComponentTestsBase : IDisposable
     {
-        protected readonly DbContextOptions<FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra.Context> _options;
-        internal readonly SqlServerTestFixture _sqlserverTest;
+        private readonly SqlServerTestFixture _sqlserverTest;
         internal readonly ApiTestFixture _apiTest;
+        private static int _tests = 0;
 
         public ComponentTestsBase()
         {
@@ -16,13 +14,18 @@ namespace TestProject.Infra
                 containerNameMssqlTools: "mssql-tools-producao-component-test",
                 databaseContainerName: "sqlserver-db-producao-component-test", port: "1428");
             _apiTest = new ApiTestFixture();
+            _tests += 1;
         }
 
         public void Dispose()
         {
-            // Do "global" teardown here; Called after every test method.
-            _sqlserverTest.Dispose();
-            _apiTest.Dispose();
+            _tests -= 1;
+            if (_tests == 0)
+            {
+                // Do "global" teardown here; Called after every test method.
+                _sqlserverTest.Dispose();
+                _apiTest.Dispose();
+            }
         }
     }
 }

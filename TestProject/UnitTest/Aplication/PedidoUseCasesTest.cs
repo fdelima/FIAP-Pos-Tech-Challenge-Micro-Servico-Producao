@@ -142,7 +142,7 @@ namespace TestProject.UnitTest.Aplication
         }
 
         /// <summary>
-        /// Testa a consulta por id
+        /// Testa a deletar por id
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.ConsultaPorId, true, 3)]
@@ -157,6 +157,72 @@ namespace TestProject.UnitTest.Aplication
 
             //Act
             var handler = new PedidoDeleteHandler(_service);
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            //Assert
+            Assert.True(result.IsValid);
+        }
+
+        /// <summary>
+        /// Testa a Iniciar preparação pedido
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(ObterDados), enmTipo.ConsultaPorId, true, 3)]
+        public async Task IniciarPreparacaoPedido(Guid idPedido)
+        {
+            ///Arrange
+            var command = new PedidoIniciarPreparacaCommand(idPedido);
+
+            //Mockando retorno do serviço de domínio.
+            _service.IniciarPreparacaoAsync(idPedido)
+                .Returns(Task.FromResult(ModelResultFactory.SucessResult()));
+
+            //Act
+            var handler = new PedidoIniciarPreparacaHandler(_service);
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            //Assert
+            Assert.True(result.IsValid);
+        }
+
+        /// <summary>
+        /// Testa a finalizar preparação pedido
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(ObterDados), enmTipo.ConsultaPorId, true, 3)]
+        public async Task FinalizarPreparacaoPedido(Guid idPedido)
+        {
+            ///Arrange
+            var command = new PedidoFinalizarPreparacaCommand(idPedido);
+
+            //Mockando retorno do serviço de domínio.
+            _service.FinalizarPreparacaoAsync(idPedido)
+                .Returns(Task.FromResult(ModelResultFactory.SucessResult()));
+
+            //Act
+            var handler = new PedidoFinalizarPreparacaHandler(_service);
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            //Assert
+            Assert.True(result.IsValid);
+        }
+
+        /// <summary>
+        /// Testa a finalizar pedido
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(ObterDados), enmTipo.ConsultaPorId, true, 3)]
+        public async Task FinalizarPedido(Guid idPedido)
+        {
+            ///Arrange
+            var command = new PedidoFinalizarCommand(idPedido);
+
+            //Mockando retorno do serviço de domínio.
+            _service.FinalizarAsync(idPedido)
+                .Returns(Task.FromResult(ModelResultFactory.SucessResult()));
+
+            //Act
+            var handler = new PedidoFinalizarHandler(_service);
             var result = await handler.Handle(command, CancellationToken.None);
 
             //Assert
@@ -190,6 +256,28 @@ namespace TestProject.UnitTest.Aplication
 
             //Assert
             Assert.True(result.IsValid);
+        }
+
+        /// <summary>
+        /// Testa a lista de pesquisa
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(ObterDados), enmTipo.Consulta, true, 3)]
+        public async Task ListarPedidos(IPagingQueryParam filter, Expression<Func<Pedido, object>> sortProp, IEnumerable<Pedido> pedidos)
+        {
+            ///Arrange
+            var command = new PedidoGetListaCommand(filter);
+
+            //Mockando retorno do serviço de domínio.
+            _service.GetListaAsync(Arg.Any<PagingQueryParam<Pedido>>())
+                .Returns(new ValueTask<PagingQueryResult<Pedido>>(new PagingQueryResult<Pedido>(new List<Pedido>(pedidos))));
+
+            //Act
+            var handler = new PedidoGetIListaHandler(_service);
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            //Assert
+            Assert.True(result.Content.Any());
         }
 
         /// <summary>

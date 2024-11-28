@@ -152,6 +152,97 @@ namespace TestProject.UnitTest.Domain
         }
 
         /// <summary>
+        /// Testa a iniciar preparação do pedido
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
+        public async Task IniciarPreparacaoPedido(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        {
+            ///Arrange
+            var pedido = new Pedido
+            {
+                IdPedido = idPedido,
+                IdDispositivo = idDispositivo,
+                Status = enmPedidoStatus.RECEBIDO.ToString(),
+                StatusPagamento =enmPedidoStatusPagamento.APROVADO.ToString(),
+                PedidoItems = items
+            };
+
+            var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
+
+            //Mockando retorno do metodo interno do FindByIdAsync
+            _gatewayPedidoMock.FindByIdAsync(idPedido)
+                .Returns(new ValueTask<Pedido>(pedido));
+
+            //Act
+            var result = await domainService.IniciarPreparacaoAsync(idPedido);
+
+            //Assert
+            Assert.True(result.IsValid);
+        }
+
+        /// <summary>
+        /// Testa a fnalizar preparação do pedido
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
+        public async Task FinalizarPreparacaoPedido(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        {
+            ///Arrange
+            var pedido = new Pedido
+            {
+                IdPedido = idPedido,
+                IdDispositivo = idDispositivo,
+                Status = enmPedidoStatus.RECEBIDO.ToString(),
+                StatusPagamento = enmPedidoStatusPagamento.APROVADO.ToString(),
+                PedidoItems = items
+            };
+
+            var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
+
+            //Mockando retorno do metodo interno do FindByIdAsync
+            _gatewayPedidoMock.FindByIdAsync(idPedido)
+                .Returns(new ValueTask<Pedido>(pedido));
+
+            //Act
+            var result = await domainService.FinalizarPreparacaoAsync(idPedido);
+
+            //Assert
+            Assert.True(result.IsValid);
+        }
+
+        /// <summary>
+        /// Testa a fnalizar pedido
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
+        public async Task FinalizarPedido(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        {
+            ///Arrange
+            var pedido = new Pedido
+            {
+                IdPedido = idPedido,
+                IdDispositivo = idDispositivo,
+                Status = enmPedidoStatus.RECEBIDO.ToString(),
+                StatusPagamento = enmPedidoStatusPagamento.APROVADO.ToString(),
+                PedidoItems = items
+            };
+
+            var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
+
+            //Mockando retorno do metodo interno do FindByIdAsync
+            _gatewayPedidoMock.FindByIdAsync(idPedido)
+                .Returns(new ValueTask<Pedido>(pedido));
+
+            //Act
+            var result = await domainService.FinalizarAsync(idPedido);
+
+            //Assert
+            Assert.True(result.IsValid);
+        }
+
+
+        /// <summary>
         /// Testa a consulta por id
         /// </summary>
         [Theory]
