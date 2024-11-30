@@ -249,7 +249,6 @@ namespace TestProject.UnitTest.Domain
         {
             ///Arrange
             var param = new PagingQueryParam<Notificacao>() { CurrentPage = 1, Take = 10 };
-            var command = new NotificacaoGetItemsCommand(filter, param.ConsultRule(), sortProp);
 
             //Mockando retorno do metodo interno do GetItemsAsync
             _notificacaoGatewayMock.GetItemsAsync(Arg.Any<PagingQueryParam<Notificacao>>(),
@@ -272,7 +271,6 @@ namespace TestProject.UnitTest.Domain
         public async Task ConsultarNotificacaoSemCondicao(IPagingQueryParam filter, Expression<Func<Notificacao, object>> sortProp, IEnumerable<Notificacao> notificacoes)
         {
             ///Arrange
-            var command = new NotificacaoGetItemsCommand(filter, sortProp);
 
             //Mockando retorno do metodo interno do GetItemsAsync
             _notificacaoGatewayMock.GetItemsAsync(filter, sortProp)

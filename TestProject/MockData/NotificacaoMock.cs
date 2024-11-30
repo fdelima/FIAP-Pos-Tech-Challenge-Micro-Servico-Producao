@@ -49,6 +49,7 @@ namespace TestProject.MockData
                 {
                     notificacoes.Add(new Notificacao
                     {
+                        IdNotificacao = Guid.NewGuid(),
                         Data = DateTime.Now,
                         Mensagem = "Mensagem de teste",
                         IdDispositivo = Guid.NewGuid()
@@ -76,6 +77,7 @@ namespace TestProject.MockData
                 {
                     notificacoes.Add(new Notificacao
                     {
+                        IdNotificacao = Guid.NewGuid(),
                         Data = DateTime.Now,
                         Mensagem = "Mensagem de teste",
                         IdDispositivo = Guid.Empty

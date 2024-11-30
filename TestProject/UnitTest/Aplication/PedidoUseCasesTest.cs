@@ -31,14 +31,29 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 3)]
-        public async Task InserirComDadosValidos(Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task InserirComDadosValidos(Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
+            var idPedido = Guid.NewGuid ();
             var pedido = new Pedido
             {
+                IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var command = new PedidoPostCommand(pedido);
 
@@ -59,14 +74,29 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, false, 3)]
-        public async Task InserirComDadosInvalidos(Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task InserirComDadosInvalidos(Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange    
+            var idPedido = Guid.NewGuid();  
             var pedido = new Pedido
             {
+                IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var command = new PedidoPostCommand(pedido);
 
@@ -88,15 +118,28 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var command = new PedidoPutCommand(idPedido, pedido);
 
@@ -117,15 +160,28 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, false, 3)]
-        public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var command = new PedidoPutCommand(idPedido, pedido);
 
@@ -234,15 +290,28 @@ namespace TestProject.UnitTest.Aplication
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task ConsultarPedidoPorId(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task ConsultarPedidoPorId(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var command = new PedidoFindByIdCommand(idPedido);
 

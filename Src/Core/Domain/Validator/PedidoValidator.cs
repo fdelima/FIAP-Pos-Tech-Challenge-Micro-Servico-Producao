@@ -17,8 +17,10 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Validator
             RuleFor(c => c.IdDispositivo).NotEmpty().WithMessage(ValidationMessages.RequiredField);
             RuleFor(c => c.IdCliente).NotEmpty().WithMessage(ValidationMessages.RequiredField);
             RuleFor(c => c.Data).NotEmpty().WithMessage(ValidationMessages.RequiredField);
-            RuleFor(c => c.DataStatusPagamento).NotEmpty().WithMessage(ValidationMessages.RequiredField);
+            RuleFor(c => c.Status).NotEmpty().WithMessage(ValidationMessages.RequiredField);
             RuleFor(c => c.DataStatusPedido).NotEmpty().WithMessage(ValidationMessages.RequiredField);
+            RuleFor(c => c.StatusPagamento).NotEmpty().WithMessage(ValidationMessages.RequiredField);
+            RuleFor(c => c.DataStatusPagamento).NotEmpty().WithMessage(ValidationMessages.RequiredField);
             RuleFor(c => c.PedidoItems).Must(x => x.Count() > 0).WithMessage(ValidationMessages.OneMandatoryItem);
             RuleForEach(c => c.PedidoItems).SetValidator(x => new PedidoItemValidator());
         }

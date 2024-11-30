@@ -20,10 +20,18 @@ namespace TestProject.MockData
                 yield return new object[]
                 {
                     Guid.NewGuid(),
+                    Guid.NewGuid(),
+                    DateTime.Now,
+                    enmPedidoStatus.RECEBIDO.ToString(),
+                    DateTime.Now,
+                    enmPedidoStatusPagamento.APROVADO.ToString(),   
+                    DateTime.Now,
                     new PedidoItem[]
                     {
                         new PedidoItem {
+                             IdPedidoItem =  Guid.NewGuid(),
                             IdProduto =  Guid.NewGuid(),
+                            Data = DateTime.Now,
                             Quantidade = 1
                         }
                     }
@@ -39,10 +47,15 @@ namespace TestProject.MockData
                 yield return new object[]
                 {
                     Guid.Empty,
+                    Guid.Empty,
+                    DateTime.Now,
+                    enmPedidoStatus.RECEBIDO.ToString(),
+                    DateTime.MinValue,
+                    enmPedidoStatusPagamento.PENDENTE.ToString(),
+                    DateTime.MinValue,
                     new PedidoItem[]
                     {
                         new PedidoItem {
-                            IdProduto =  Guid.NewGuid(),
                             Quantidade = 0
                         }
                     }

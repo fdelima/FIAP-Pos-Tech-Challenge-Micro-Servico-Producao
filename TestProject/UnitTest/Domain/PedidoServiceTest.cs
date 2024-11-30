@@ -1,5 +1,4 @@
-﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
+﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
@@ -38,21 +37,29 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 3)]
-        public async Task InserirComDadosValidos(Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task InserirComDadosValidos(Guid idDispositivo, Guid idCliente, 
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
+            var idPedido = Guid.NewGuid();
             var pedido = new Pedido
             {
-                IdPedido = Guid.NewGuid(),
-                IdCliente = Guid.NewGuid(),
+                IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
                 PedidoItems = items,
-                Data = DateTime.Now,
-                DataStatusPedido = DateTime.Now,
-                DataStatusPagamento = DateTime.Now,
-                Status = enmPedidoStatus.RECEBIDO.ToString(),
-                StatusPagamento = enmPedidoStatusPagamento.APROVADO.ToString()
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
@@ -68,13 +75,24 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, false, 3)]
-        public async Task InserirComDadosInvalidos(Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task InserirComDadosInvalidos(Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
+            var idPedido = Guid.NewGuid();
             var pedido = new Pedido
             {
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
@@ -92,19 +110,28 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task AlterarComDadosValidos(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
-                IdCliente = Guid.NewGuid(),
                 IdDispositivo = idDispositivo,
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
                 PedidoItems = items,
-                Data = DateTime.Now,
-                DataStatusPedido = DateTime.Now,
-                DataStatusPagamento = DateTime.Now
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
@@ -128,15 +155,28 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, false, 3)]
-        public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task AlterarComDadosInvalidos(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
@@ -156,17 +196,28 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task IniciarPreparacaoPedido(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task IniciarPreparacaoPedido(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                Status = enmPedidoStatus.RECEBIDO.ToString(),
-                StatusPagamento =enmPedidoStatusPagamento.APROVADO.ToString(),
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
@@ -186,17 +237,28 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task FinalizarPreparacaoPedido(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task FinalizarPreparacaoPedido(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                Status = enmPedidoStatus.RECEBIDO.ToString(),
-                StatusPagamento = enmPedidoStatusPagamento.APROVADO.ToString(),
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = enmPedidoStatus.EM_PREPARACAO.ToString(),
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
@@ -216,17 +278,28 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task FinalizarPedido(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task FinalizarPedido(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                Status = enmPedidoStatus.RECEBIDO.ToString(),
-                StatusPagamento = enmPedidoStatusPagamento.APROVADO.ToString(),
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = enmPedidoStatus.PRONTO.ToString(),
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
@@ -247,15 +320,28 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task DeletarPedido(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task DeletarPedido(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
@@ -278,15 +364,28 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task ConsultarPedidoPorIdComDadosValidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task ConsultarPedidoPorIdComDadosValidos(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
@@ -306,15 +405,28 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Alteracao, true, 3)]
-        public async Task ConsultarPedidoPorIdComDadosInvalidos(Guid idPedido, Guid idDispositivo, ICollection<PedidoItem> items)
+        public async Task ConsultarPedidoPorIdComDadosInvalidos(Guid idPedido, Guid idDispositivo, Guid idCliente,
+            DateTime data, string status, DateTime dataStatusPedido,
+            string statusPagamento, DateTime dataStatusPagamento,
+            ICollection<PedidoItem> items)
         {
-            ///Arrange
+            ///Arrange            
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
                 IdDispositivo = idDispositivo,
-                PedidoItems = items
+                IdCliente = idCliente,
+                Data = data,
+                Status = status,
+                DataStatusPedido = dataStatusPedido,
+                StatusPagamento = statusPagamento,
+                DataStatusPagamento = dataStatusPagamento,
+                PedidoItems = items,
+
             };
+
+            foreach (var item in items)
+                item.IdPedido = idPedido;
 
             var domainService = new PedidoService(_gatewayPedidoMock, _validator, _notificacaoGatewayMock);
 
@@ -357,7 +469,6 @@ namespace TestProject.UnitTest.Domain
         {
             ///Arrange
             var param = new PagingQueryParam<Pedido>() { CurrentPage = 1, Take = 10 };
-            var command = new PedidoGetItemsCommand(filter, param.ConsultRule(), sortProp);
 
             //Mockando retorno do metodo interno do GetItemsAsync
             _gatewayPedidoMock.GetItemsAsync(Arg.Any<PagingQueryParam<Pedido>>(),
@@ -380,7 +491,6 @@ namespace TestProject.UnitTest.Domain
         public async Task ConsultarPedidoSemCondicao(IPagingQueryParam filter, Expression<Func<Pedido, object>> sortProp, IEnumerable<Pedido> Pedidos)
         {
             ///Arrange
-            var command = new PedidoGetItemsCommand(filter, sortProp);
 
             //Mockando retorno do metodo interno do GetItemsAsync
             _gatewayPedidoMock.GetItemsAsync(filter, sortProp)
