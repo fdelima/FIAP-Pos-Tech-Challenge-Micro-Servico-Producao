@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<coverage version="1.0" date="2024-11-30_17-08-30" tag="">
+<coverage version="1.0" date="2024-12-02_15-37-31" tag="">
   <assembly name="FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application">
     <class name="FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.Controllers.NotificacaoController" coveredlines="50" coverablelines="50" totallines="130" coveredbranches="12" totalbranches="14" coveredcodeelements="8" totalcodeelements="8" />
     <class name="FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.Controllers.PedidoController" coveredlines="56" coverablelines="68" totallines="176" coveredbranches="12" totalbranches="14" coveredcodeelements="9" totalcodeelements="12" />
