@@ -14,7 +14,7 @@
                 containerNameMssqlTools: "mssql-tools-producao-component-test",
                 databaseContainerName: "sqlserver-db-producao-component-test", port: "1428");
             _apiTest = new ApiTestFixture();
-            Thread.Sleep(10000);
+            Thread.Sleep(15000);
         }
 
         public void Dispose()
