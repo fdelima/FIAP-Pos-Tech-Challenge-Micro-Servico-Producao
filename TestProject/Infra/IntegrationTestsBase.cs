@@ -12,7 +12,7 @@
                 imageNameMssqlTools: "fdelima/fiap-pos-techchallenge-micro-servico-producao-gurpo-71-scripts-database:fase4-test",
                 containerNameMssqlTools: "mssql-tools-producao-test",
                 databaseContainerName: "sqlserver-db-producao-test", port: "1434");
-            Thread.Sleep(15000);
+            Thread.Sleep(10000);
         }
 
         public void Dispose()

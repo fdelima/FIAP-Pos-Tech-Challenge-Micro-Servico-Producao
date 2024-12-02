@@ -54,6 +54,7 @@ namespace TestProject.ComponenteTest
                 IdPedidoItem = Guid.NewGuid(),
                 IdPedido = idPedido,
                 IdProduto = Guid.Parse("f724910b-ed6d-41a2-ab52-da4cd26ba413"),
+                Data = DateTime.Now,
                 Quantidade = 1
             });
             _pedido.PedidoItems.Add(new PedidoItem
@@ -61,6 +62,7 @@ namespace TestProject.ComponenteTest
                 IdPedidoItem = Guid.NewGuid(),
                 IdPedido = idPedido,
                 IdProduto = Guid.Parse("802be132-64ef-4737-9de7-c83298c70a73"),
+                Data = DateTime.Now,
                 Quantidade = 1
             });
             _pedido.PedidoItems.Add(new PedidoItem
@@ -68,6 +70,7 @@ namespace TestProject.ComponenteTest
                 IdPedidoItem = Guid.NewGuid(),
                 IdPedido = idPedido,
                 IdProduto = Guid.Parse("f44b20ab-a453-4579-accf-d94d7075f508"),
+                Data = DateTime.Now,
                 Quantidade = 1
             });
         }
