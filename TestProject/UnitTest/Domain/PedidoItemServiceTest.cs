@@ -292,7 +292,7 @@ namespace TestProject.UnitTest.Domain
                 .Returns(new ValueTask<PagingQueryResult<PedidoItem>>(new PagingQueryResult<PedidoItem>(new List<PedidoItem>(items))));
 
             //Act
-            var result = await _pedidoItemGatewayMock.GetItemsAsync(filter, x=> x.Data);
+            var result = await _pedidoItemGatewayMock.GetItemsAsync(filter, x => x.Data);
 
             //Assert
             Assert.True(result.Content.Any());

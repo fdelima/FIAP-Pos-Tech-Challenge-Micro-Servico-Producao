@@ -1,6 +1,5 @@
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 
 namespace TestProject.MockData
 {

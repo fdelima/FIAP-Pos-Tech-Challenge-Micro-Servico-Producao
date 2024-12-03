@@ -1,7 +1,7 @@
 ﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
 
 namespace TestProject.MockData
 {
@@ -24,7 +24,7 @@ namespace TestProject.MockData
                     DateTime.Now,
                     enmPedidoStatus.RECEBIDO.ToString(),
                     DateTime.Now,
-                    enmPedidoStatusPagamento.APROVADO.ToString(),   
+                    enmPedidoStatusPagamento.APROVADO.ToString(),
                     DateTime.Now,
                     new PedidoItem[]
                     {

@@ -162,7 +162,7 @@ namespace TestProject.ComponenteTest
         public async Task IniciarPreparacaoPedido()
         {
             expectedResult = ModelResultFactory.UpdateSucessResult<Pedido>(_pedido);
-            
+
             var client = _apiTest.GetClient();
             HttpResponseMessage response = await client.PatchAsJsonAsync(
                 $"api/producao/pedido/{_pedido.IdPedido}/IniciarPreparacao", _pedido.IdPedido);
@@ -180,7 +180,7 @@ namespace TestProject.ComponenteTest
         public async Task FinalizarPreparacaoPedido()
         {
             expectedResult = ModelResultFactory.UpdateSucessResult<Pedido>(_pedido);
-           
+
             var client = _apiTest.GetClient();
             HttpResponseMessage response = await client.PatchAsJsonAsync(
                 $"api/producao/pedido/{_pedido.IdPedido}/FinalizarPreparacao", _pedido.IdPedido);

@@ -1,7 +1,6 @@
 ﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 using TestProject.Infra;

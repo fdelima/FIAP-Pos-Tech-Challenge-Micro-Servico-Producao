@@ -1,10 +1,10 @@
 ﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 
 namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Api.Controllers
 {

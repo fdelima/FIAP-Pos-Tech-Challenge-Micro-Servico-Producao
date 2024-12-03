@@ -1,12 +1,11 @@
 ﻿using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.ValuesObject;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Infra.Gateways;
 using System.Linq.Expressions;
 using TestProject.Infra;
 using TestProject.MockData;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 
 namespace TestProject.IntegrationTest.External
 {
@@ -113,7 +112,7 @@ namespace TestProject.IntegrationTest.External
             await _notificacaoGateway.CommitAsync();
 
             //Alterando
-            notificacao.Mensagem = mensagem + " ALTERADA !!! " ;
+            notificacao.Mensagem = mensagem + " ALTERADA !!! ";
 
             var dbEntity = await _notificacaoGateway.FindByIdAsync(idNotificacao);
 
@@ -157,7 +156,7 @@ namespace TestProject.IntegrationTest.External
             await _notificacaoGateway.CommitAsync();
 
             //Alterando
-            notificacao.Mensagem = null;            
+            notificacao.Mensagem = null;
 
             var dbEntity = await _notificacaoGateway.FindByIdAsync(idNotificacao);
 

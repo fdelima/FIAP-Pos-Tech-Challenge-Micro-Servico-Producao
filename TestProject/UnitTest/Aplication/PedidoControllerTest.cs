@@ -2,6 +2,7 @@
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Commands;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Validator;
@@ -12,7 +13,6 @@ using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using System.Linq.Expressions;
 using TestProject.MockData;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 
 namespace TestProject.UnitTest.Aplication
 {

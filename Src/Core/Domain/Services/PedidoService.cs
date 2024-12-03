@@ -32,10 +32,10 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         /// </summary>
         public async override Task<ModelResult> FindByIdAsync(Guid Id)
         {
-            Entities.Pedido? result = await _gateway.FirstOrDefaultWithIncludeAsync(x => x.PedidoItems, x => x.IdPedido == Id);
+            Pedido? result = await _gateway.FirstOrDefaultWithIncludeAsync(x => x.PedidoItems, x => x.IdPedido == Id);
 
             if (result == null)
-                return ModelResultFactory.NotFoundResult<Entities.Pedido>();
+                return ModelResultFactory.NotFoundResult<Pedido>();
 
             return ModelResultFactory.SucessResult(result);
         }
@@ -45,7 +45,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         /// </summary>
         /// <param name="entity">Entidade</param>
         /// <param name="ValidatorResult">Validações já realizadas a serem adicionadas ao contexto</param>
-        public override async Task<ModelResult> InsertAsync(Entities.Pedido entity, string[]? businessRules = null)
+        public override async Task<ModelResult> InsertAsync(Pedido entity, string[]? businessRules = null)
         {
             List<string> lstWarnings = new List<string>();
 
@@ -61,21 +61,6 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
             if (businessRules != null)
                 lstWarnings.AddRange(businessRules);
 
-            //TODO:Há Resolver...
-            //if (!await _dispositivoGateway.Any(x => ((Dispositivo)x).IdDispositivo.Equals(entity.IdDispositivo)))
-            //    lstWarnings.Add(BusinessMessages.NotFoundInError<Dispositivo>(entity.IdDispositivo));
-
-            //TODO:Há Resolver...
-            //if (!await _clienteGateway.Any(x => ((Cliente)x).IdCliente.Equals(entity.IdCliente)))
-            //    lstWarnings.Add(BusinessMessages.NotFoundInError<Cliente>(entity.IdDispositivo));
-
-            foreach (PedidoItem itemPedido in entity.PedidoItems)
-            {
-                //TODO:Há Resolver...
-                //if (!await _produtoGateway.Any(x => ((Produto)x).IdProduto.Equals(itemPedido.IdProduto)))
-                //    lstWarnings.Add(BusinessMessages.NotFoundInError<Produto>(entity.IdDispositivo));
-            }
-
             await _gateway.InsertAsync(new Notificacao
             {
                 IdNotificacao = Guid.NewGuid(),
@@ -90,13 +75,9 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         /// <summary>
         /// Regra para atualização do pedido e suas dependências.
         /// </summary>
-        public async override Task<ModelResult> UpdateAsync(Entities.Pedido entity, string[]? businessRules = null)
+        public async override Task<ModelResult> UpdateAsync(Pedido entity, string[]? businessRules = null)
         {
-            Entities.Pedido? dbEntity = await _gateway.FirstOrDefaultWithIncludeAsync(x => x.PedidoItems, x => x.IdPedido == entity.IdPedido);
-
-            //TODO:Há Resolver...
-            //if (dbEntity == null)
-            //    return ModelResultFactory.NotFoundResult<Produto>();
+            Pedido? dbEntity = await _gateway.FirstOrDefaultWithIncludeAsync(x => x.PedidoItems, x => x.IdPedido == entity.IdPedido);
 
             for (int i = 0; i < dbEntity.PedidoItems.Count; i++)
             {
@@ -126,7 +107,7 @@ namespace FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Services
         /// 2. Pedidos mais antigos primeiro e mais novos depois;
         /// 3. Pedidos com status Finalizado não devem aparecer na lista.
         /// </summary>
-        public async ValueTask<PagingQueryResult<Entities.Pedido>> GetListaAsync(IPagingQueryParam filter)
+        public async ValueTask<PagingQueryResult<Pedido>> GetListaAsync(IPagingQueryParam filter)
         {
             filter.SortDirection = "Desc";
             return await _gateway.GetItemsAsync(filter, x => x.Status != enmPedidoStatus.FINALIZADO.ToString(), o => o.Data);

@@ -2,12 +2,12 @@
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Application.UseCases.Pedido.Handlers;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Entities;
+using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Interfaces;
 using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Models;
 using NSubstitute;
 using System.Linq.Expressions;
 using TestProject.MockData;
-using FIAP.Pos.Tech.Challenge.Micro.Servico.Producao.Domain.Extensions;
 
 namespace TestProject.UnitTest.Aplication
 {
@@ -37,7 +37,7 @@ namespace TestProject.UnitTest.Aplication
             ICollection<PedidoItem> items)
         {
             ///Arrange            
-            var idPedido = Guid.NewGuid ();
+            var idPedido = Guid.NewGuid();
             var pedido = new Pedido
             {
                 IdPedido = idPedido,
@@ -80,7 +80,7 @@ namespace TestProject.UnitTest.Aplication
             ICollection<PedidoItem> items)
         {
             ///Arrange    
-            var idPedido = Guid.NewGuid();  
+            var idPedido = Guid.NewGuid();
             var pedido = new Pedido
             {
                 IdPedido = idPedido,

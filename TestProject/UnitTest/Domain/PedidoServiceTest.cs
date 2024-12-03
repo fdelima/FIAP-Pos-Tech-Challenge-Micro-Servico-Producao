@@ -37,7 +37,7 @@ namespace TestProject.UnitTest.Domain
         /// </summary>
         [Theory]
         [MemberData(nameof(ObterDados), enmTipo.Inclusao, true, 3)]
-        public async Task InserirComDadosValidos(Guid idDispositivo, Guid idCliente, 
+        public async Task InserirComDadosValidos(Guid idDispositivo, Guid idCliente,
             DateTime data, string status, DateTime dataStatusPedido,
             string statusPagamento, DateTime dataStatusPagamento,
             ICollection<PedidoItem> items)
